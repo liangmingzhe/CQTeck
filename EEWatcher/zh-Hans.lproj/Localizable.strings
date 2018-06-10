@@ -1,0 +1,226 @@
+/* 
+  Localizable.strings
+  CQTechApp
+
+  Created by 梁明哲 on 2016/12/11.
+  Copyright © 2016年 ChengQian. All rights reserved.
+*/
+//注册页面
+"t_language_cn" = "中文";
+"t_account_format" = "账号格式为6～20数字或字母";
+"t_password_format" = "密码格式为6～20数字或字母";
+"l_password" = "密码";
+"l_password_again" = "密码确认";
+"l_nickname" = "昵称";
+"t_nickname_format" = "请不要输入空格";
+"l_phone" = "手机号";
+"l_protocol" = "成前科技用户服务协议";
+"l_time" = "时间";
+//登陆页面
+"m_user_can_not_be_empty" = "账户不能为空";
+"m_pass_can_not_be_empty" = "密码不能为空";
+"please_enter_user" = "请输入账户名";
+"please_enter_pass" = "请输入密码";
+"l_Login" = "登录";
+"l_Register" = "注册";
+"temperature" = "温度";
+"humidity" = "湿度";
+//实时数据页面
+"t_no_sensor" = "探头未连接";
+//找回密码界面
+"l_foget_pass" = "忘记密码?";
+"l_retrieve_tip" = "取回密码功能必须绑定邮箱方可使用。请求成功后，请前往邮箱取得密码。";
+"l_retrieve" = "找回密码";
+//区域选择页面
+"l_alldevice" = "所有设备";
+"l_areaset" = "区域设置";
+"l_all" = "全部";
+"l_Area" = "区域";
+"l_list" = "列表";
+"l_grid" = "宫格";
+"l_getBack" = "返回";
+//搜索页面
+"t_devName" = "请输入设备的名称";
+
+//设备二级菜单
+"normal" = "正常";
+"exceed" = "偏高"; //Exceed the maximum threshold
+"lower" = "偏低"; //Lower
+"l_last_date" = "最后上传时间";
+//绑定邮箱
+"l_bindMailBox" = "绑定邮箱";
+"l_disbind" = "解除绑定";
+"t_please_insert_mail" = "请输入电子邮箱。";
+"t_format_error" = "邮箱格式错误。";
+"t_not_bound_mailbox" = "尚未绑定邮箱";
+"t_tips_mailbox" = "点击确认后,请按照提示前往邮箱点击激活链接，即可成功绑定邮箱。";
+"t_if_disbound" = "是否解除";
+"t_and" = "与";
+"t_and_mailbox" = "的绑定?";
+//修改密码
+"l_modifyPass" = "修改密码";
+"l_enter_old" = "请输入原密码";
+"l_enter_new" = "请输入新密码";
+"l_enter_new_again" = "请再输入新密码";
+"t_oldpass_incorrect" = "原密码不正确";
+"t_tips_modify_pass" = "修改密码必须确认账户已绑定邮箱。";
+"t_old_empty" = "原密码不能为空。";
+"t_old_new" = "新密码和原密码不能想同。";
+"t_format_pass" = "密码必须为大于等于六位的数字或字符串。";
+"t_pass_not_fit" = "两次输入的密码不相同，请重新输入。";
+//添加方式
+"l_add_mode" = "添加方式";
+"l_wireless" = "无线型";
+"universal" = "通用型";
+"t_tips_1" = "此方法适用于 CQY2xx";
+"t_tips_2" = "如果设备屏幕左上角出现了RTU标识,请使用此方法";
+//一键配置
+"temperature_and_humidity_recorder" = "温湿度记录仪";
+"l_Adddevice" = "一键配置";
+"l_pass" = "密码:";
+"l_wifiplacehoder" = "请输入无线网络密码";
+"t_switch_on" = "单个配置已打开";
+"t_switch_off" = "单个配置已关闭";
+"t_link_wifi" = "请连接Wi-Fi";
+"t_pass_is_correct" = "设备将获取此密码进行绑定,请确保密码输入正确。";
+"t_ssid_tips" = "该网络为手机当前所连接的网络,配置成功后,设备也将被绑定到此网络下。";
+"t_not_network_connect" = "未连接网络";
+"l_single_switch" = "单个配置开关";
+"l_ssid" = "Wi-Fi:";
+//SN
+"l_return" = "返回";
+"SerialNumber" = "序列号";
+"ac_check" = "校验码";
+"l_add" = "添加";
+"l_please_enter_correct_sn" = "请输入正确的SN码";
+"l_please_enter_correct_ac" = "请输入正确的AC码";
+"t_serial" = "串号(SN)";
+"t_check" = "校验码(AC)";
+"t_device_exist" = "设备已存在于账号下，请勿重复添加";
+"t_sn_ac_error" = "请确认SN码和AC码是否正确!";
+"t_tips_rtu" = "使用此方法添加设备需确保设备屏幕左上角已经出现‘RTU’标识。";
+"l_whatis_rtu" = "什么是RTU?";
+"l_scan_bar" = "请扫描设备屏幕下方条形码";
+//设备历史数据查询页面
+"l_history_data" = "历史数据";
+"l_alarm_record" = "报警记录";
+"l_setting" = "设备详情";
+"l_authority" = "权限管理";
+"t_no_authority" = "暂无权限修改。";
+"t_please_choose_period" = "请选择查询时间间隔";
+"l_start_time" = "开始时间";
+"l_end_time" = "结束时间";
+"l_inquire" = "查询";
+"l_interval" = "间隔";
+"l_minute" = "分钟";
+"l_second" = "秒";
+"l_hour" = "小时";
+"t_period_tips" = "历史数据单次查询的时间最长为7天。";
+"t_choose_time" = "请选择时间段";
+"t_worm_history"="开始时间不能晚于结束时间。";
+"t_maxTemp" = "最高温度";
+"t_minTemp" = "最低温度";
+"t_maxHumi" = "最高湿度";
+"t_minHumi" = "最低湿度";
+"t_chart" = "曲线";
+//设备历史报警查询界面
+"l_tips_history_alarm" = "报警历史只能查询到之前7天。";
+"l_history_alarm" = "报警查询";
+
+//设备修改页面
+"l_deviceset" = "设置";
+"l_devicename" = "设备名称";
+"l_deivcearea" = "区域修改";
+"l_devicethreshold" = "阈值设置";
+"l_deviceinterval" = "上传间隔";
+"l_devicealarm" = "报警关联";
+"t_message_and_call" = "短信,语音报警";
+"t_gap" = "设备数据上传时间间隔";
+//设备名修改页面
+"l_done" = "确定";
+"l_device" = "设备";
+"l_modifysuccess" = "修改成功";
+"l_modifyfailed" = "修改失败";
+//设备分组修改页面
+"l_devicearea" = "设备区域";
+"l_modify" = "修改";
+//设备阈值修改页面
+"l_threshold" = "阈值";
+"l_maxTemp" = "最高温度";
+"l_minTemp" = "最低温度";
+"l_maxHumi" = "最高湿度";
+"l_minHumi" = "最低湿度";
+"l_TempHuiCha" = "温度回差";
+"l_HumiHuiCha" = "湿度回差";
+"t_the_threhold_message" = "温度设置范围(-200℃+500℃),温度设置范围(0~99%),报警回差暂不支持修改。";
+"t_humi_huicha" = "湿度回差不得大于5%";
+"t_temp_huicha" = "温度回差不得大于1℃";
+"t_temp_max" = "最高温度不得高于500℃";
+"t_temp_max_min" = "最高温度不得低于最低温度";
+"t_temp_min" = "最低温度不得低于-200℃";
+"t_temp_min_max" = "最低温度不得高于最高温度";
+"t_humi_max" = "最高湿度不得高于99.99%";
+"t_humi_min" = "最高湿度不得低于最低湿度";
+"t_humi_min_zero" = "最低湿度不得低于0%";
+"t_humi_min_max" = "最低湿度不得高于最高湿度";
+"l_hide" = "隐藏";
+"l_back" = "退格";
+"l_clear" = "清除";
+//上传间隔修改页面
+//权限
+"t_transfer_authority" = "是否将管理权限转移至";
+//查看报警页面
+"l_alarm" = "列表";
+"l_record" = "记录";
+"t_alarm" = "近24小时无报警记录";
+"t_display_alarm" = "只展示最近24小时内的报警";
+//更多页面
+"l_form_list" = "列表";
+"l_form_collection" = "集合";
+//公共使用的提示语
+"OK" = "好的";
+"Network_Error" = "未能连接到网络";
+"Reload" = "重新加载";
+"Config" = "配置";
+"Wait" = "等待";
+"Confirm" = "确认";
+"Cancel" = "取消";
+"Back" = "取消";
+"LogOut" = "登出";
+"delete" = "删除";
+"delete_success" = "删除成功";
+"delete_failed" = "删除失败";
+"Rename" = "重命名";
+"Save" = "修改";
+"deleteDevice" = "删除设备";
+"Choose_Area" = "所有区域";
+"No_Device" = "当前区域无设备。";
+"Request_Failed" = "请求失败,请检查网络是否正确连接";
+"If_LogOut" = "是否退出当前账户？";
+"Tips" = "提示";
+"l_AfterService" = "售后服务";
+"Account" = "账户";
+"Balance" = "余额";
+"Caches" = "缓存";
+"Language" = "语言";
+"AlarmManager" = "报警管理";
+"l_Other_Product" = "相关产品";
+"l_Coryrht" = "版本信息";
+"Data_RealData" = "实时";
+"Data_Alarm" = "报警";
+"Data_More" = "更多";
+"Data_Update" = "上次更新";
+"l_ShowType" = "展现形式";
+"company" = "杭州成前科技有限公司";
+"l_loading" = "加载中";
+"l_exit" = "退出";
+"l_mobileList" = "手机列表";
+"l_AllSwitch" = "报警总开关";
+"l_SMS" = "短信通知";
+"l_CALL" = "语音电话(暂未上线)";
+"l_notification" = "推送通知";
+"l_mailalarm" = "邮件通知";
+"l_data_exception" = "数据异常";
+"l_offLine" = "离线";
+"l_addMobile" = "添加号码";
+

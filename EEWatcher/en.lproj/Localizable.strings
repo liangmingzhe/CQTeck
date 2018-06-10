@@ -1,0 +1,230 @@
+/* 
+  Localizable.strings
+  CQTechApp
+
+  Created by 梁明哲 on 2016/12/11.
+  Copyright © 2016年 ChengQian. All rights reserved.
+*/
+//注册
+"t_language_cn" = "EN";
+"t_account_format" = "6~20 numbers or letters.";
+"t_password_format" = "6~20 numbers or letters.";
+"l_password" = "Password";
+"l_password_again" = "Password Confirm";
+"l_nickname" = "NickName";
+"t_nickname_format" = "No space";
+"l_phone" = "Phone";
+"l_protocol" = "User Service Protocol";
+"l_time" = "Date";
+//登陆页面
+"m_user_can_not_be_empty" = "Account can't be empty";
+"m_pass_can_not_be_empty" = "Password can't be empty";
+"please_enter_user" = "enter user name";
+"please_enter_pass" = "enter password";
+"l_Login" = "Login";
+"l_Register" = "Register";
+"temperature" = "TEMP";
+"humidity" = "HUMI";
+//实时数据页面
+"t_no_sensor" = "detector is unconnected";
+//找回密码
+"l_foget_pass" = "Forget Password?";
+"t_not_bound_mailbox" = "Not bound mailBox";
+"l_retrieve_tip" = "You have to bind a mailbox.After you posted the request, we will send an e-mail contants the new password";
+"l_retrieve_user" = "Please enter the account";
+"l_retrieve" = "Retrieve";
+
+//区域选择页面
+"l_alldevice" = "All Devices";
+"l_areaset" = "Area Setting";
+"l_all" = "All";
+"l_Area" = "Area";
+"l_list" = "List";
+"l_grid" = "Grid";
+//搜索页面
+"t_devName" = "Please enter device's name";
+//设备二级菜单
+"normal" = "Normal";
+"exceed" = "Exceed"; //Exceed the maximum threshold
+"lower" = "Lower"; //Lower
+"l_last_date" = "Last Date";
+//绑定邮箱
+"l_bindMailBox" = "MailBox";
+"l_disbind" = "Unbind";
+"t_please_insert_mail" = "Please enter an E-Mail address";
+"t_tips_mailbox" = "After clicking the Confirm, please login in the mailbox  and follow the prompt to click the activation link, then you can bind the mailbox successfully.";
+"t_format_error" = "MailBox format Error";
+"t_if_disbound" = "Do you want to unbind ";
+"t_and" = " and ";
+"t_and_mailbox" = "?";
+//修改密码
+"l_modifyPass" = "Modify Password";
+"l_enter_old" = "Original Password";
+"l_enter_new" = "New Password";
+"l_enter_new_again" = "New Password again";
+"t_oldpass_incorrect" = "The original password is incorrect.";
+"t_tips_modify_pass" = "To modify the password, you must bind the mailbox first.";
+"t_old_empty" = "The original password can't be empty.";
+"t_old_new" = "The new pass be different with the original password";
+"t_format_pass" = "Only allow input more than 6 bits numbers or letters.";
+"t_pass_not_fit" = "Two input password must be consistent";
+//添加方式
+"l_add_mode" = "Add Mode";
+"l_wireless" = "Wireless";
+"universal" = "Universal";
+"t_tips_1" = "This method is applicable to CQY2xx";
+"t_tips_2" = "If there is a RTU logo on the top left corner of the device screen, use this method";
+//一键配置
+"temperature_and_humidity_recorder" = "Temperature and humidity recorder";
+"l_Adddevice" = "Easy Config";
+"l_pass" = "Password:";
+"l_wifiplacehoder" = "Enter Wi-Fi password";
+"t_switch_on" = "Single configuration Mode";
+"t_switch_off" = "Multi-configuration Mode";
+"t_link_wifi" = "Please connect to Wi-Fi";
+"t_pass_is_correct" = "The device will get this password to bind, please ensure that the password is correct.";
+"t_ssid_tips" = "The device will be bound to this WiFi.";
+"t_not_network_connect" = "Not connected to Wi-Fi";
+"l_single_switch" = "Single Mode Switch";
+"l_ssid" = "SSID:";
+//SN
+"l_return" = "Return";
+
+"SerialNumber" = "SN";
+"ac_check" = "AC";
+"l_add" = "Add";
+"l_please_enter_correct_sn" = "SN is uncorrecrt";
+"l_please_enter_correct_ac" = "AC is uncorrecrt";
+"t_serial" = "Serial Number(SN)";
+"t_check" = "Check Code(AC)";
+"t_device_exist" = "The device has already existed in the account.";
+"t_sn_ac_error" = "SN or AC is is incorrect";
+"t_tips_rtu" = "Using this method to add device require that the 'RTU' logo has appeared on the top left corner of the device screen.";
+"l_whatis_rtu" = "What is RTU?";
+"l_scan_bar" = "Please scan the bar code below the device screen";
+//设备历史数据查询页面
+"l_history_data" = "History";
+"l_alarm_record" = "Alarm";
+"l_setting" = "Device";
+"l_authority" = "Authority";
+"t_no_authority" = "Permission Denied";
+"t_please_choose_period" = "Please Choose Period";
+"l_start_time" = "From";
+"l_end_time" = "To";
+"l_inquire" = "Inquire";
+"l_interval" = "Interval";
+"l_minute" = "min";
+"l_second" = "s";
+"l_hour" = "h";
+"t_period_tips" = "The longest time for a single query is 7 days.";
+"t_choose_time" = "Please select the time";
+"t_worm_history"="The start time can't be later than the end time.";
+"t_maxTemp" = "MaxTemp";
+"t_minTemp" = "MinTemp";
+"t_maxHumi" = "MaxHumi";
+"t_minHumi" = "MinHumi";
+"t_chart" = "Chart";
+//设备历史报警查询界面
+"l_tips_history_alarm" = "The history of the alarm can only be searched for the first 7 days.";
+"l_history_alarm" = "Alarm Check";
+//设备修改页面
+"l_deviceset" = "Device Set";
+"l_devicename" = "Device Name";
+"l_deivcearea" = "The Area";
+"l_devicethreshold" = "Threshold";
+"l_deviceinterval" = "Gap";
+"l_devicealarm" = "Device Alarm";
+"t_message_and_call" = "SMS,CALL";
+"t_gap" = "Setting up time interval for device data uploading";
+//设备名修改页面
+"l_done" = "Done";
+"l_device" = "Device";
+"l_modifysuccess" = "Modify successfully!";
+"l_modifyfailed" = "Modify failed!";
+//设备分组修改页面
+"l_devicearea" = "Device Area";
+"l_modify" = "Modify";
+//设备阈值修改页面
+"l_threshold" = "Threshold";
+"l_maxTemp" = "Max Temperature";
+"l_minTemp" = "Min Temperature";
+"l_maxHumi" = "Max Humidity";
+"l_minHumi" = "Min Humidity";
+"l_TempHuiCha" = "Temperature Hystersis";
+"l_HumiHuiCha" = "Humidity Hystersis";
+"t_the_threhold_message" = "Temperature range(-200℃～+500℃),Humidity range(0~99%)";
+"t_humi_huicha" = "Humidity Hystersis should be less than 5%";
+"t_temp_huicha" = "Temperature Hystersis should be less than 1℃";
+"t_temp_max" = "The Max Temperature should be less than 500℃";
+"t_temp_max_min" = "The Max Temperature can't be lower than  the Min Temperature";
+"t_temp_min" = "The Max Temperature can't be lower than -200℃";
+"t_temp_min_max" = "The Min Temperature can't beyond the Max Temperature";
+"t_humi_max" = "The Max Humidity can't beyond 99.99%";
+"t_humi_min" = "The Max Humidity can't be lower than  the Min Humidity";
+"t_humi_min_zero" = "The Min Humidity can't be lower than 0%";
+"t_humi_min_max" = "The Min Humidity can't beyond the Max Humidity";
+"l_hide" = "Hide";
+"l_back" = "Back";
+"l_clear" = "CLear";
+//上传间隔修改页面
+//权限
+"t_transfer_authority" = "Do you want to transfer authority to";
+//查看报警页面
+"l_alarm" = "Alarm";
+"l_record" = "记录";
+"t_alarm" = "No device error record in the last 24 hours";
+"t_display_alarm" = "Only show the alarm information in the last 24 hours";
+//更多页面
+"l_form_list" = "list";
+"l_form_collection" = "collection";
+//公共使用的提示语
+"OK" = "OK";
+"Network_Error" = "Unable to connect to the network";
+"Reload" = "Reload";
+"Config" = "Configuration";
+"Wait" = "Waiting";
+"Confirm" = "Confirm";
+"Cancel" = "Cancel";
+"Back" = "Back";
+"LogOut" = "Logout";
+"delete" = "delete";
+"delete_success" = "Delete successfully";
+"delete_failed" = "Delete failed";
+"Rename" = "Rename";
+"Save" = "save";
+"deleteDevice" = "Delete";
+"Choose_Area" = "All Devices";
+"No_Device" = "There is no device in this area.";
+"Request_Failed" = "Request failed,please check the network.";
+"If_LogOut" = "Do you really want to exit?";
+"Tips" = "Tips";
+"l_AfterService" = "After Service";
+"Account" = "Account";
+"Balance" = "Balance";
+"Caches" = "Caches";
+"Language" = "Language";
+"AlarmManager" = "Alarm Manager";
+"l_Other_Product" = "Products";
+"l_Coryrht" = "Version";
+"Data_RealData" = "RTD";
+"Data_Alarm" = "Alarm";
+"Data_More" = "More";
+"Data_Update" = "Last Update at";
+"l_ShowType" = "Display Type";
+"company" = "HZ.ChengqianTechnology Co.Ltd.";
+"l_loading" = "Loading...";
+"l_exit" = "Exit";
+"l_mobileList" = "Mobile List";
+"l_AllSwitch" = "Alarm Switch";
+"l_SMS" = "SMS";
+"l_CALL" = "CALL(Not On Line)";
+"l_notification" = "Notification";
+"l_mailalarm" = "MAIL";
+"l_data_exception" = "Data Exception";
+"l_offLine" = "Off-Line";
+"l_addMobile" = "Add Numbers";
+
+
+
+
+

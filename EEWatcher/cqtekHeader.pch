@@ -1,0 +1,18 @@
+//
+//  cqtekHeader.pch
+//  CQTechApp
+//
+//  Created by 梁明哲 on 2017/2/22.
+//  Copyright © 2017年 ChengQian. All rights reserved.
+//
+
+#ifndef cqtekHeader_pch
+#define cqtekHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+static NSString *cqtek_api = @"http://iot.chengqianyun.com:2500";
+//static NSString *cqtek_test_api = @"http://api.eefield.com:2500";
+#import "Request.h"
+#endif /* cqtekHeader_pch */
+

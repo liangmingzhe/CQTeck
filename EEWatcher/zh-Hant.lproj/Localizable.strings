@@ -1,0 +1,176 @@
+/* 
+  Localizable.strings
+  CQTechApp
+
+  Created by 梁明哲 on 2016/12/11.
+  Copyright © 2016年 ChengQian. All rights reserved.
+*/
+
+//登陆页面
+"m_user_can_not_be_empty" = "賬戶名不能為空";
+"m_pass_can_not_be_empty" = "密碼不能為空";
+"please_enter_user" = "請輸入賬戶名";
+"please_enter_pass" = "請輸入密碼";
+"l_Login" = "登錄";
+"l_Register" = "注冊";
+"temperature" = "溫度";
+"humidity" = "濕度";
+"l_time" = "时间";
+//实时数据页面
+"t_no_sensor" = "探頭未連接";
+//找回密码
+"l_foget_pass" = "忘記密碼?";
+"l_retrieve_tip" = "提示：取回密碼功能必須綁定郵箱，請求成功後，請前往郵箱取得密碼。";
+"l_retrieve_user" = "請輸入賬戶名称";
+"l_retrieve" = "找回密碼";
+
+//区域选择页面
+"l_alldevice" = "所有設備";
+"l_areaset" = "區域設置";
+"l_all" = "全部";
+"l_Area" = "區域";
+"l_list" = "列表";
+"l_grid" = "宮格";
+//搜索页面
+"t_devName" = "請輸入設備的名稱";
+//设备二级菜单
+"normal" = "正常";
+"exceed" = "偏高"; //Exceed the maximum threshold
+"lower" = "偏高"; //Lower
+"l_last_date" = "最後上傳時間";
+//绑定邮箱
+"l_bindMailBox" = "綁定郵箱";
+"l_disbind" = "解除綁定";
+"t_please_insert_mail" = "請輸入電子郵箱";
+"t_not_bound_mailbox" = "尚未綁定郵箱";
+"t_tips_mailbox" = "點擊確認後,請按照提示前往郵箱點擊激活鏈接，即可成功綁定郵箱。";
+"t_format_error" = "郵箱格式錯誤";
+//修改密码
+"l_modifyPass" = "修改密碼";
+"l_enter_old" = "請輸入原密碼";
+"l_enter_new" = "請輸入新密碼";
+"l_enter_new_again" = "請再輸入新密碼";
+"t_tips_modify_pass" = "修改密碼必須確認賬戶已綁定郵箱。";
+"t_old_empty" = "原密碼不能為空";
+"t_old_new" = "新密碼和原密碼不能想同";
+"t_format_pass" = "密碼必須為大於等於六位的數字或字符串。";
+"t_pass_not_fit" = "兩次輸入的密碼不相同，請重新輸入。";
+//一键配置
+"temperature_and_humidity_recorder" = "溫濕度記錄儀";
+"l_Adddevice" = "一鍵配置";
+"l_pass" = "密碼:";
+"l_wifiplacehoder" = "請輸入無線網絡密碼";
+//设备历史数据查询页面
+"l_history_data" = "歷史數據";
+"l_alarm_record" = "報警記錄";
+"l_setting" = "設備詳情";
+"l_authority" = "權限管理";
+"t_no_authority" = "暫無權限修改";
+"t_please_choose_period" = "請選擇查詢的時間間隔";
+"l_start_time" = "開始時間";
+"l_end_time" = "結束時間";
+"l_inquire" = "查詢";
+"l_interval" = "間隔";
+"l_minute" = "分鐘";
+"l_second" = "秒";
+"l_hour" = "小時";
+"t_period_tips" = "歷史數據單次查詢的時間最長為7天";
+"t_choose_time" = "請選擇查詢時間";
+"t_worm_history"="開始時間不能晚於結束時間";
+//设备历史报警查询界面
+"l_tips_history_alarm" = "報警歷史只能查詢到之前7天。";
+"l_history_alarm" = "報警查詢";
+//设备修改页面
+"l_deviceset" = "設置";
+"l_devicename" = "設備名稱";
+"l_deivcearea" = "區域修改";
+"l_devicethreshold" = "閾值設置";
+"l_deviceinterval" = "上傳間隔";
+"l_devicealarm" = "报警關聯";
+"t_message_and_call" = "短信,語音報警";
+"t_gap" = "設備數據上傳時間間隔";
+//设备名修改页面
+"l_done" = "確定";
+"l_device" = "設備";
+"l_modifysuccess" = "修改成功";
+"l_modifyfailed" = "修改失敗";
+//设备分组修改页面
+"l_devicearea" = "設備區域";
+"l_modify" = "修改";
+//设备阈值修改页面
+"l_threshold" = "閾值";
+"l_maxTemp" = "最高溫度";
+"l_minTemp" = "最低溫度";
+"l_maxHumi" = "最高濕度";
+"l_minHumi" = "最低濕度";
+"l_TempHuiCha" = "溫度回差";
+"l_HumiHuiCha" = "濕度回差";
+"t_the_threhold_message" = "溫度設置範圍(-200℃+500℃),溫度設置範圍(0~99%),報警回差暫不支持修改。";
+"t_humi_huicha" = "濕度回差不得大於5%";
+"t_temp_huicha" = "溫度回差不得大於1℃";
+"t_temp_max" = "最高溫度不得高於500℃";
+"t_temp_max_min" = "最高溫度不得低於最低溫度";
+"t_temp_min" = "最低溫度不得低於-200℃";
+"t_temp_min_max" = "最低溫度不得高於最高溫度";
+"t_humi_max" = "最高濕度不得高於99.99%";
+"t_humi_min" = "最高濕度不得低於最低濕度";
+"t_humi_min_zero" = "最低濕度不得低於0";
+"t_humi_min_max" = "最低濕度不得高於最高濕度";
+"l_hide" = "隱藏";
+"l_back" = "退格";
+"l_clear" = "清除";
+//上传间隔修改页面
+//权限
+"t_transfer_authority" = "是否將管理權限轉移至";
+"t_display_alarm" = "只展示最近24小時內的報警";
+//查看报警页面
+"l_alarm" = "列表";
+"l_record" = "記錄";
+"t_alarm" = "近24小時無報警記錄";
+//更多页面
+"l_form_list" = "列表";
+"l_form_collection" = "集合";
+//公共使用的提示语
+"OK" = "好的";
+"Network_Error" = "未能連接到網絡";
+"Config" = "配置";
+"Wait" = "等待";
+"Reload" = "重新載入";
+"Confirm" = "確認";
+"Cancel" = "取消";
+"Back" = "取消";
+"LogOut" = "登出";
+"delete" = "删除";
+"Rename" = "重命名";
+"Save" = "修改";
+"deleteDevice" = "删除設備";
+"Choose_Area" = "所有區域";
+"No_Device" = "當前區域無設備。";
+"Request_Failed" = "請求失敗,請檢查網絡是否正確連接。";
+"If_LogOut" = "確認登出當前賬戶？";
+"Tips" = "提示";
+"l_AfterService" = "售後服務";
+"Account" = "賬戶";
+"Balance" = "余額";
+"Caches" = "缓存";
+"Language" = "語言";
+"AlarmManager" = "報警管理";
+"l_Other_Product" = "相關產品";
+"l_Coryrht" = "版本信息";
+"Data_RealData" = "實時";
+"Data_Alarm" = "報警";
+"Data_More" = "更多";
+"Data_Update" = "上次更新";
+"l_ShowType" = "展现形式";
+"company" = "杭州成前科技有限公司";
+"l_loading" = "加載中";
+"l_exit" = "登出";
+"l_mobileList" = "手機列表";
+"l_AllSwitch" = "報警總開關";
+"l_SMS" = "短信通知";
+"l_CALL" = "語音電話(暫未上線)";
+"l_notification" = "推送通知";
+"l_mailalarm" = "郵件通知";
+"l_data_exception" = "數據異常";
+"l_offLine" = "離線";
+"l_addMobile" = "添加手機號";

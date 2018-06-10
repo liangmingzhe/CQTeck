@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Arial.ttf">
+            <string>ArialMT</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="77" id="KGk-i7-Jjw" customClass="DevSetCell">
+            <rect key="frame" x="0.0" y="0.0" width="372" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="338" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="zhezhe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sCV-9f-SVS">
+                        <rect key="frame" x="142" y="19" width="133" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="133" id="qSe-af-bgP"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设备名" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twG-Jz-NN9">
+                        <rect key="frame" x="20" y="7" width="130" height="46"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="130" id="7sN-R1-ksB"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="twG-Jz-NN9" firstAttribute="centerY" secondItem="sCV-9f-SVS" secondAttribute="centerY" id="38j-Zl-lRi"/>
+                    <constraint firstItem="twG-Jz-NN9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="4" id="7Vz-4M-Jqb"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="sCV-9f-SVS" secondAttribute="trailing" constant="55" id="POh-6x-Jnv"/>
+                    <constraint firstItem="twG-Jz-NN9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-4" id="Z5c-y2-4Ah"/>
+                    <constraint firstItem="twG-Jz-NN9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="nhH-Ly-9xS"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="1vU-Vg-tci"/>
+            <connections>
+                <outlet property="ItemName" destination="twG-Jz-NN9" id="yhO-ea-2h6"/>
+                <outlet property="ItemValue" destination="sCV-9f-SVS" id="hwk-Ik-uZl"/>
+            </connections>
+            <point key="canvasLocation" x="34" y="78"/>
+        </tableViewCell>
+    </objects>
+</document>

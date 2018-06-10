@@ -1,0 +1,6 @@
+framework module Pods_CQTechApp {
+  umbrella header "Pods-CQTechApp-umbrella.h"
+
+  export *
+  module * { export * }
+}
