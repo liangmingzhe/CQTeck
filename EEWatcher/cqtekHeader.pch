@@ -11,8 +11,17 @@
 
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
-static NSString *cqtek_api = @"http://iot.chengqianyun.com:2500";
-//static NSString *cqtek_test_api = @"http://api.eefield.com:2500";
+
+#define WIDTH [UIScreen mainScreen].bounds.size.width
+#define HEIGHT [UIScreen mainScreen].bounds.size.height
+
 #import "Request.h"
+#import "CQHttpService.h"
+#import "AFNetworking/AFNetworking.h"
+#import "GlobalParams.h"
+#import "ManNiuToastView.h"
+#import "Masonry/Masonry.h"
+#define cqtek_api [GlobalParams getHttpDomain]
+
 #endif /* cqtekHeader_pch */
 

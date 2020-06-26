@@ -60,8 +60,8 @@
 
     NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"]};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"getAreaInfo" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"getAreaInfo"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);
@@ -86,8 +86,8 @@
     //网络服务参数设置
     NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"],@"snaddr":[defaults objectForKey:@"snaddr"],@"area":DevAreastr};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"setDevArea" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"setDevArea"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);

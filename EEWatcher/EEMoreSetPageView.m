@@ -27,6 +27,7 @@
     NSTimer* refreshTheCatchesTimer;
     int authoflag;
 }
+@property (nonatomic,assign) int tapnum;
 
 @end
 
@@ -34,21 +35,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [self.navigationController setNavigationBarHidden:YES animated:NO];
     UIView* view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height/5)];
     view.backgroundColor = [UIColor colorWithRed:36/255.0 green:97/255.0 blue:160/255.0 alpha:1];
     [self.view addSubview:view];
 
+    self.tapnum = 0;
     defaults = [NSUserDefaults standardUserDefaults];
     
     self.view.backgroundColor = [UIColor whiteColor];
     
     UIImageView *iconBtn = [[UIImageView alloc]initWithFrame:CGRectMake(20, view.frame.size.height - view.frame.size.width/5 - 30, view.frame.size.width/5, view.frame.size.width/5)];
     iconBtn.image= [UIImage imageNamed:@"headIcon"]; //image = [UIImage imageNamed:@"headIcon"];
-    
+    iconBtn.backgroundColor = [UIColor whiteColor];
     iconBtn.layer.cornerRadius = view.frame.size.width/10;
     iconBtn.layer.borderWidth = 3;
     iconBtn.layer.borderColor = [UIColor colorWithRed:100.0/255.0 green:132.0/255.0 blue:201.0/255.0 alpha:1].CGColor;
     [view addSubview:iconBtn];
+    
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapIconHandle:)];
+    tapGestureRecognizer.numberOfTapsRequired = 1;
+    tapGestureRecognizer.numberOfTouchesRequired = 1;
+    [iconBtn addGestureRecognizer:tapGestureRecognizer];
+    iconBtn.userInteractionEnabled = YES;
     
     UILabel* user = [[UILabel alloc]initWithFrame:CGRectMake(iconBtn.frame.origin.x + iconBtn.frame.size.width + 10, iconBtn.frame.origin.y + iconBtn.frame.size.height/2 - 30, 300, 30)];
     user.textColor = [UIColor whiteColor];
@@ -81,12 +90,13 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     refreshTheCatchesTimer = [NSTimer scheduledTimerWithTimeInterval:10.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
         [itemTable reloadData];
     }];
     [refreshTheCatchesTimer fire];
     //隐藏导航条
-    [self.navigationController setNavigationBarHidden:YES animated:YES ];
+    
     Request* request = [[Request alloc]init];
     [request setParameter:@"user" value:[defaults objectForKey:@"cqUser"]];
     
@@ -127,6 +137,7 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle]loadNibNamed:@"MoreItemCell" owner:nil options:nil] lastObject];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:18];
         cell.itemImage.contentMode = UIViewContentModeScaleAspectFit;
         cell.detailText.text = @"";
@@ -220,6 +231,26 @@
     
 }
 
+//切换测试环境
+- (void)tapIconHandle:(id)sender {
+    if (self.tapnum < 5) {
+        self.tapnum++;
+    }else if(self.tapnum >=5 && self.tapnum < 11){
+        if(self.tapnum == 5){
+            [GlobalParams switchHttpDomainToTest2501:YES];
+            [ManNiuToastView showToast:@"切到测试环境" withDuration:2];
+        }
+        self.tapnum ++;
+        
+    }else {
+        self.tapnum = 0;
+        if(self.tapnum == 0){
+            [GlobalParams switchHttpDomainToTest2501:NO];
+            [ManNiuToastView showToast:@"切到正式环境" withDuration:2];
+
+        }
+    }
+}
 @end
 
 

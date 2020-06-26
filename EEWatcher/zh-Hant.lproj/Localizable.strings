@@ -168,7 +168,7 @@
 "l_mobileList" = "手機列表";
 "l_AllSwitch" = "報警總開關";
 "l_SMS" = "短信通知";
-"l_CALL" = "語音電話(暫未上線)";
+"l_CALL" = "語音電話";
 "l_notification" = "推送通知";
 "l_mailalarm" = "郵件通知";
 "l_data_exception" = "數據異常";

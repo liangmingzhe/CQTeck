@@ -285,7 +285,7 @@ UITableViewDelegate,UITableViewDataSource>{
         ChartXAxis *xAxis = _linechartView.xAxis;
         xAxis.labelPosition = XAxisLabelPositionBottom;
         xAxis.labelFont = [UIFont systemFontOfSize:10.0f];
-        xAxis.axisMinValue = -0.3;
+//        xAxis.axisMinValue = -0.3;
         xAxis.granularity = 0;
         xAxis.labelCount = 2; // 先是坐标个数
         xAxis.drawAxisLineEnabled = NO;    //是否画x轴线
@@ -334,9 +334,9 @@ UITableViewDelegate,UITableViewDataSource>{
         
         [left2Axis removeAllLimitLines];
         left2Axis.labelFont = [UIFont systemFontOfSize:8.f];
-        left2Axis.axisMaxValue = 99.0;
+        left2Axis.axisMaximum = 99.0;
         left2Axis.labelCount = 5;
-        left2Axis.axisMinValue = 0.0;
+        left2Axis.axisMinimum = 0.0;
         left2Axis.axisLineWidth = 1;
         left2Axis.drawZeroLineEnabled = NO;
         left2Axis.drawLimitLinesBehindDataEnabled = YES;
@@ -346,7 +346,7 @@ UITableViewDelegate,UITableViewDataSource>{
         ChartXAxis *xAxis = _linehumiChartView.xAxis;
         xAxis.labelPosition = XAxisLabelPositionBottom;
         xAxis.labelFont = [UIFont systemFontOfSize:12.0f];
-        xAxis.axisMinValue = -0.3;
+//        xAxis.axisMinValue = -0.3;
         xAxis.granularity = 0;
         xAxis.labelCount = 2; // 先是坐标个数
         xAxis.drawAxisLineEnabled = NO;    //是否画x轴线
@@ -357,7 +357,7 @@ UITableViewDelegate,UITableViewDataSource>{
         NSArray *xValues = time;
         if (xValues.count > 0) {
             // 这里将代理赋值为一个类的对象, 该对象需要遵循IChartAxisValueFormatter协议, 并实现其代理方法(我们可以对需要显示的值进行各种处理, 这里对日期进行格式处理)(当然下面的各代理也都可以这样写)
-            _linehumiChartView.xAxis.axisMaxValue = (double)xValues.count - 1 + 0.3;
+            _linehumiChartView.xAxis.axisMaximum = (double)xValues.count - 1 + 0.3;
             _linehumiChartView.xAxis.valueFormatter = [[DateValueFormatter alloc] initWithDateArr:xValues];
             
         }
@@ -437,10 +437,10 @@ UITableViewDelegate,UITableViewDataSource>{
     }
     
     CGFloat topNum = leftAxisMax * (8.0/4.0);
-    _linechartView.leftAxis.axisMaxValue = topNum;
+    _linechartView.leftAxis.axisMaximum = topNum;
     if (leftAxisMin < 0) {
         CGFloat minNum = leftAxisMin * (4.0/4.0);
-        _linechartView.leftAxis.axisMinValue = minNum ;
+        _linechartView.leftAxis.axisMinimum = minNum ;
     }
     
     // 设置Y轴数据
@@ -448,7 +448,8 @@ UITableViewDelegate,UITableViewDataSource>{
     
     // 设置折线数据
     LineChartDataSet *set1 = nil;
-    set1 = [[LineChartDataSet alloc] initWithValues:statistics label:title];
+//    set1 = [[LineChartDataSet alloc] initWithValues:statistics label:title];
+    set1 = [[LineChartDataSet alloc] initWithEntries:statistics label:title];
     set1.mode = LineChartModeLinear;   // 弧度mode
     [set1 setColor:color];
     [set1 setCircleColor:color];
@@ -482,10 +483,10 @@ UITableViewDelegate,UITableViewDataSource>{
     }
     
     CGFloat topNum = leftAxisMax * (4.0/4.0);
-    _linehumiChartView.leftAxis.axisMaxValue = topNum;
+    _linehumiChartView.leftAxis.axisMaximum = topNum;
     if (leftAxisMin < 0) {
         CGFloat minNum = leftAxisMin * (4.0/4.0);
-        _linehumiChartView.leftAxis.axisMinValue = minNum ;
+        _linehumiChartView.leftAxis.axisMinimum = minNum ;
     }
     
     // 设置Y轴数据
@@ -493,7 +494,8 @@ UITableViewDelegate,UITableViewDataSource>{
     
     // 设置折线数据
     LineChartDataSet *set1 = nil;
-    set1 = [[LineChartDataSet alloc] initWithValues:statistics label:title];
+//    set1 = [[LineChartDataSet alloc] initWithValues:statistics label:title];
+    set1 = [[LineChartDataSet alloc] initWithEntries:statistics label:title];
     set1.mode = LineChartModeLinear;   // 弧度mode
     [set1 setColor:color];
     [set1 setCircleColor:color];

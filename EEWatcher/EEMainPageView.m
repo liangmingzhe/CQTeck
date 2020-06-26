@@ -35,7 +35,7 @@
     UIButton* setButton;
     AFHTTPSessionManager *manager;
     NSMutableDictionary *JSON;//http请求返回的JSON格式数据
-    NSUserDefaults* defaults;
+    
     UIView* MaskView;
     int tryCount;
     int noDevCount;
@@ -45,8 +45,10 @@
     UILabel* onLineNumberLabel;
     UILabel* offLineNumberLabel;
     UILabel* abnormalNumberLabel;
-
+    UILabel* inTrigNumberLabel;
 }
+@property (nonatomic ,strong) NSUserDefaults* defaults;
+@property (nonatomic ,strong) NSString* account;
 @end
 NSString* kheaderIdentifier = @"HeaderView";
 
@@ -58,6 +60,8 @@ singleton_m(Instance);
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.defaults = [NSUserDefaults standardUserDefaults];
+    _account = [self.defaults objectForKey:@"cqUser"];
     self.automaticallyAdjustsScrollViewInsets = NO; //tableview的cell顶格显示
     self.view.opaque = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tongzhi:) name:@"zuochouti" object:nil];
@@ -66,7 +70,7 @@ singleton_m(Instance);
     //导航条部分
     self.navigationItem.title = LocalizedString(@"Data_RealData");
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"Arial" size:20],NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    titleLabel.text = [defaults objectForKey:@"areaAll"];
+    titleLabel.text = [self.defaults objectForKey:@"areaAll"];
     //右上角进入一键配置按键初始化
     UIView* btnView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     
@@ -196,7 +200,7 @@ singleton_m(Instance);
     manager.requestSerializer.timeoutInterval = 5.0;
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"text/json", nil];
-    defaults = [NSUserDefaults standardUserDefaults];
+    
 }
 /*
  *函数名:MaskView
@@ -240,14 +244,15 @@ singleton_m(Instance);
 - (void)tongzhi:(NSNotification *)text{
     //清空设备通知计数
     noDevCount = 0;
-    if ([defaults objectForKey:@"areaAll"] == nil) {
+    if ([self.defaults objectForKey:@"areaAll"] == nil) {
         titleLabel.text = LocalizedString(@"Choose_Area");
         _DeviceArray = _deviceList;
         
-        int x,y,z;
+        int x,y,z,f;
         x = 0;
         y = 0;
         z = 0;
+        f = 0;
         for (NSMutableDictionary* dic in _DeviceArray){
             if( [[dic objectForKey:@"abnormal"] isEqualToString:@"0"]){
                 x++;
@@ -255,19 +260,21 @@ singleton_m(Instance);
                 y++;
             }else if([[dic objectForKey:@"abnormal"] isEqualToString:@"3"]){
                 z++;
+            }else if([[dic objectForKey:@"abnormal"] isEqualToString:@"4"]){
+                f++;
             }
         }
         onLineNumberLabel.text = [NSString stringWithFormat:@"%d",x];
         offLineNumberLabel.text = [NSString stringWithFormat:@"%d",y];
         abnormalNumberLabel.text = [NSString stringWithFormat:@"%d",z];
-
+        inTrigNumberLabel.text = [NSString stringWithFormat:@"%d",f];
         
     }else{
-        titleLabel.text = [defaults objectForKey:@"areaAll"];
+        titleLabel.text = [self.defaults objectForKey:@"areaAll"];
         //重新加载数据  要不要进行请求   选择区域无需进行请求
         [self reloadRealData];
     }
-    if ([[defaults objectForKey:@"show"] isEqualToString:@"List"]) {
+    if ([[self.defaults objectForKey:@"show"] isEqualToString:@"List"]) {
         [self.view addSubview: _list];
         [_list reloadData];
     }else{
@@ -305,7 +312,9 @@ singleton_m(Instance);
     tryCount = 0;
     //第一次进入页面时间，检查区域内有无数据进行通知
     noDevCount = 0;
-    if ([[defaults objectForKey:@"show"] isEqualToString:@"List"]) {
+    _account = [self.defaults objectForKey:@"cqUser"];
+    
+    if ([[self.defaults objectForKey:@"show"] isEqualToString:@"List"]) {
         [self.view addSubview: _list];
         [_list reloadData];
     }else{
@@ -313,10 +322,10 @@ singleton_m(Instance);
         [_collection reloadData];
     }
 
-    if ([defaults objectForKey:@"areaAll"] == nil) {
+    if ([self.defaults objectForKey:@"areaAll"] == nil) {
         titleLabel.text = LocalizedString(@"Choose_Area");
     }else{
-        titleLabel.text = [defaults objectForKey:@"areaAll"];
+        titleLabel.text = [self.defaults objectForKey:@"areaAll"];
     }
     //检查App是否能正常连上外网
     Reachability* reach = [Reachability reachabilityForInternetConnection];
@@ -346,8 +355,13 @@ singleton_m(Instance);
         [_deviceList removeAllObjects];
     }else{
         [MaskView removeFromSuperview];
+        if (timer != nil) {
+            [timer invalidate];
+            timer  = nil;
+        }
         timer = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(getNewDataList) userInfo:nil repeats:YES];
         [timer fire];
+        
     }
 }
 //页面将离开
@@ -358,36 +372,30 @@ singleton_m(Instance);
 //获取新的设备列表
 - (void)getNewDataList{
     //获取账号下所有的设备序列码，组成一个列表
-    NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"],@"curve":@"allLast"};
-    manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"getUserRTData" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
-        nil;
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"请求成功:%@", responseObject);
-        JSON = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+    [CQHttpService getDeviceListWithAccount:_account success:^(id  _Nonnull successObject) {
+        NSLog(@"请求成功:%@", successObject);
         //将设备实时数据保存到_datatest中
-        if([[JSON objectForKey:@"code"]intValue] == 0){
-            _deviceList = [JSON objectForKey:@"array"];
-            [_DeviceArray removeAllObjects];
+        if([[successObject objectForKey:@"code"]intValue] == 0){
+            _deviceList = [[successObject objectForKey:@"array"] mutableCopy];
+            _DeviceArray = nil;
             [_deviceListArray removeAllObjects];
-            if ([defaults objectForKey:@"areaAll"] == nil) {
+            if ([self.defaults objectForKey:@"areaAll"] == nil) {
                 //如果当前未选择区域，则默认显示所有区域的设备
-                _DeviceArray = _deviceList;
+                _DeviceArray = [_deviceList mutableCopy];
                 
             }else{
                 for (NSMutableDictionary* dic in _deviceList){
-                    if( [[dic objectForKey:@"area"] isEqual:[defaults objectForKey:@"areaAll"]]){
+                    if( [[dic objectForKey:@"area"] isEqual:[self.defaults objectForKey:@"areaAll"]]){
                         [_DeviceArray addObject:dic];
                     }
                 }
             }
             //设备区域确认好之后，进行简单的统计，在线离线设备个数
-            int x,y,z;
+            int x,y,z,f;
             x = 0;
             y = 0;
             z = 0;
-            
+            f = 0;
             for (NSMutableDictionary* dic in _DeviceArray){
                 if([[dic objectForKey:@"abnormal"] isEqualToString:@"0"]){
                     x++;
@@ -395,20 +403,23 @@ singleton_m(Instance);
                     y++;
                 }else if([[dic objectForKey:@"abnormal"] isEqualToString:@"3"]){
                     z++;
+                }else if([[dic objectForKey:@"abnormal"] isEqualToString:@"4"]){
+                    f++;
                 }
                 NSString* devNamestr = [dic objectForKey:@"devName"];
-
+                
                 [_deviceListArray addObject:devNamestr];
             }
             onLineNumberLabel.text = [NSString stringWithFormat:@"%d",x];
             offLineNumberLabel.text = [NSString stringWithFormat:@"%d",y];
             abnormalNumberLabel.text = [NSString stringWithFormat:@"%d",z];
+            inTrigNumberLabel.text = [NSString stringWithFormat:@"%d",f];
         }
         else{
-        //请求失败，非网络原因，待补充
+            //请求失败，非网络原因，待补充
             
         }
-        if ([[defaults objectForKey:@"show"] isEqualToString:@"List"]) {
+        if ([[self.defaults objectForKey:@"show"] isEqualToString:@"List"]) {
             [self.view addSubview: _list];
             [_list reloadData];
             [_list.mj_header endRefreshing];
@@ -420,8 +431,7 @@ singleton_m(Instance);
         //成功，清空计数，若三次请求失败将 调用MaskView盖住显示层
         tryCount = 0;
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"请求失败:%@", error.description);
+    } failure:^(id  _Nonnull failureObject) {
         //请求失败，关闭hud
         //[MBProgressHUD hideHUDForView:self.view animated:YES];
         //网络异常计数+1
@@ -467,7 +477,7 @@ singleton_m(Instance);
             //背景展示颜色，背景图
             reusableview.backgroundColor = [UIColor colorWithRed:44/255.0 green:115/255.0 blue:170/255.0 alpha:1];
             
-            UIImageView* OnLineLight = [[UIImageView alloc]initWithFrame:CGRectMake(reusableview.frame.size.width/10*7, reusableview.frame.size.height/4*3 - 5, 10, 10)];
+            UIImageView* OnLineLight = [[UIImageView alloc]initWithFrame:CGRectMake(reusableview.frame.size.width/10*6, reusableview.frame.size.height/4*3 - 5, 10, 10)];
             OnLineLight.image = [UIImage imageNamed:@"main1_online.png"];
             [reusableview addSubview:OnLineLight];
             OnLineLight.layer.borderWidth = 1;
@@ -478,38 +488,54 @@ singleton_m(Instance);
             onLineNumberLabel.textColor = [UIColor whiteColor];
             [reusableview addSubview:onLineNumberLabel];
             
-            UIImageView* abLight = [[UIImageView alloc]initWithFrame:CGRectMake(reusableview.frame.size.width/5*4, reusableview.frame.size.height/4*3 - 5, 10, 10)];
+            UIImageView* abLight = [[UIImageView alloc]initWithFrame:CGRectMake(reusableview.frame.size.width/10*7, reusableview.frame.size.height/4*3 - 5, 10, 10)];
             abLight.image = [UIImage imageNamed:@"main1_abnormal.png"];
             [reusableview addSubview:abLight];
             abLight.layer.borderWidth = 1;
             abLight.layer.borderColor = [UIColor whiteColor].CGColor;
+            
+            
+            
             abnormalNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(abLight.frame.origin.x + abLight.frame.size.width + 3, abLight.frame.origin.y - 3, 60, 16)];
             abnormalNumberLabel.text = @"";
             abnormalNumberLabel.font = [UIFont fontWithName:@"Arial" size:14];
             abnormalNumberLabel.textColor = [UIColor whiteColor];
             [reusableview addSubview:abnormalNumberLabel];
             
-            UIImageView* OffLineLight = [[UIImageView alloc]initWithFrame:CGRectMake(reusableview.frame.size.width/10*9, reusableview.frame.size.height/4*3 - 5, 10, 10)];
-            OffLineLight.image = [UIImage imageNamed:@"main1_offline.png"];
-            [reusableview addSubview:OffLineLight];
-            OffLineLight.layer.borderWidth = 1;
-            OffLineLight.layer.borderColor = [UIColor whiteColor].CGColor;
-            offLineNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(OffLineLight.frame.origin.x + OffLineLight.frame.size.width + 3, OffLineLight.frame.origin.y - 3, 60, 16)];
+            UIImageView* offLineLight = [[UIImageView alloc]initWithFrame:CGRectMake(reusableview.frame.size.width/10*8, reusableview.frame.size.height/4*3 - 5, 10, 10)];
+            offLineLight.image = [UIImage imageNamed:@"main1_offline.png"];
+            [reusableview addSubview:offLineLight];
+            offLineLight.layer.borderWidth = 1;
+            offLineLight.layer.borderColor = [UIColor whiteColor].CGColor;
+            offLineNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(offLineLight.frame.origin.x + offLineLight.frame.size.width + 3, offLineLight.frame.origin.y - 3, 60, 16)];
             offLineNumberLabel.text = @"";
             offLineNumberLabel.font = [UIFont fontWithName:@"Arial" size:14];
             offLineNumberLabel.textColor = [UIColor whiteColor];
             [reusableview addSubview:offLineNumberLabel];
 
+            
+            
+            UIImageView* inTrigLineLight = [[UIImageView alloc]initWithFrame:CGRectMake(reusableview.frame.size.width/10*9, reusableview.frame.size.height/4*3 - 5, 10, 10)];
+            inTrigLineLight.image = [UIImage imageNamed:@"main1_trig_in.png"];
+            [reusableview addSubview:inTrigLineLight];
+            inTrigLineLight.layer.borderWidth = 1;
+            inTrigLineLight.layer.borderColor = [UIColor whiteColor].CGColor;
+            inTrigNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(inTrigLineLight.frame.origin.x + inTrigLineLight.frame.size.width + 3, inTrigLineLight.frame.origin.y - 3, 60, 16)];
+            inTrigNumberLabel.text = @"";
+            inTrigNumberLabel.font = [UIFont fontWithName:@"Arial" size:14];
+            inTrigNumberLabel.textColor = [UIColor whiteColor];
+            [reusableview addSubview:inTrigNumberLabel];
+            
             titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(5,reusableview.frame.size.height/4*3 - 13, 200, 26)];
             titleLabel.textColor = [UIColor whiteColor];
             titleLabel.font = [UIFont fontWithName:@"Arial" size:16];
             
             titleLabel.textAlignment = NSTextAlignmentLeft;
             
-            if ([defaults objectForKey:@"areaAll"] == nil) {
+            if ([self.defaults objectForKey:@"areaAll"] == nil) {
                 titleLabel.text = LocalizedString(@"Choose_Area");
             }else{
-                titleLabel.text = [defaults objectForKey:@"areaAll"];
+                titleLabel.text = [self.defaults objectForKey:@"areaAll"];
             }
 
 
@@ -537,10 +563,11 @@ singleton_m(Instance);
         cell.temp.text = [NSString stringWithFormat:@"%@℃",[[_DeviceArray[indexPath.row] objectForKey:@"temp"] objectForKey:@"value"]];
         cell.humi.text = [NSString stringWithFormat:@"%@％",[[_DeviceArray[indexPath.row] objectForKey:@"humi"]objectForKey:@"value" ]];
         cell.lastTime.text = [NSString stringWithFormat:@"%@",[_DeviceArray[indexPath.row] objectForKey:@"time"]];
-        NSLog(@"%@",[_DeviceArray[indexPath.row] objectForKey:@"time"]);
         cell.humiStatusImage.image = nil;
         cell.tempStatusImage.image = nil;
-        
+        if ([[_DeviceArray[indexPath.row] objectForKey:@"devName"] containsString:@"G2102L01"]) {
+            NSLog(@"");
+        }
         if ([[_DeviceArray[indexPath.row] objectForKey:@"abnormal"] isEqualToString:@"1"]) {
             [cell.OnlineImage setImage:[UIImage imageNamed:@"main1offline"]];
             cell.tempStatusImage.image = nil;
@@ -555,6 +582,12 @@ singleton_m(Instance);
             cell.tempStatusImage.image = nil;
             cell.humiStatusImage.image = nil;
 
+            //....℃
+        }else if ([[_DeviceArray[indexPath.row] objectForKey:@"abnormal"] isEqualToString:@"4"]){
+            [cell.OnlineImage setImage:[UIImage imageNamed:@"in_trig"]];
+            cell.tempStatusImage.image = nil;
+            cell.humiStatusImage.image = nil;
+            
             //....℃
         }
         else{
@@ -584,6 +617,7 @@ singleton_m(Instance);
     }
     else{
         ListCell *cell;
+        UIImage* imageOnline = [UIImage imageNamed:@"main1online"];
         cell = [_list dequeueReusableCellWithReuseIdentifier:@"ListCell" forIndexPath:indexPath];
         cell.opaque = YES;
         cell.title.text = [_DeviceArray[indexPath.row] objectForKey:@"devName"];
@@ -608,8 +642,15 @@ singleton_m(Instance);
             cell.humiStatusImage.image = nil;
 
         }
+        else if ([[_DeviceArray[indexPath.row] objectForKey:@"abnormal"] isEqualToString:@"4"]){
+            [cell.OnlineImage setImage:[UIImage imageNamed:@"in_trig"]];
+            cell.tempStatusImage.image = nil;
+            cell.humiStatusImage.image = nil;
+            
+            //....℃
+        }
         else{
-            [cell.OnlineImage setImage:[UIImage imageNamed:@"main1online"]];
+            cell.OnlineImage.image = imageOnline;
             //判断设备是否超出阈值并作报警提示
             if([[[_DeviceArray[indexPath.row] objectForKey:@"temp"] objectForKey:@"status"] isEqualToString:@"-1"]){
                 cell.tempStatusImage.image = [UIImage imageNamed:@"main1low.png"];
@@ -644,8 +685,8 @@ singleton_m(Instance);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    [defaults setObject:[_DeviceArray[indexPath.row] objectForKey:@"snaddr"] forKey:@"snaddr"];
-    [defaults setObject:[_DeviceArray[indexPath.row] objectForKey:@"devName"] forKey:@"deviceName"];
+    [self.defaults setObject:[_DeviceArray[indexPath.row] objectForKey:@"snaddr"] forKey:@"snaddr"];
+    [self.defaults setObject:[_DeviceArray[indexPath.row] objectForKey:@"devName"] forKey:@"deviceName"];
     NSLog(@"%@",[_DeviceArray[indexPath.row] objectForKey:@"dev_name"]);
     DeviceSecondStageMenuController* DevSetView = [[DeviceSecondStageMenuController alloc]init];
     [DevSetView setHidesBottomBarWhenPushed:YES];//隐藏底层buttonbar

@@ -38,13 +38,14 @@
 
 + (void)Post:(NSString*)url outTime:(int)outTime success:(SuccessBlock)successBlock
         failure:(FailureBlock)failureBlock{
-    
+    NSLog(@"API = %@ header = %@",url,HeaderDic);
     dispatch_group_t group = dispatch_group_create();
     //2.创建队列
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     //3.添加请求
+    dispatch_group_enter(group);
     dispatch_group_async(group, queue, ^{
-        dispatch_group_enter(group);
+        
         AFHTTPSessionManager *manager;
         manager = [[AFHTTPSessionManager manager]init];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -53,12 +54,7 @@
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"text/json", nil];
         manager.securityPolicy.allowInvalidCertificates = NO;
         
-        //设置请求头
-        for (NSString *key in [HeaderDic allKeys] ) {
-            [manager.requestSerializer setValue:[NSString stringWithFormat:@"%@",[HeaderDic objectForKey:key]] forHTTPHeaderField:key];
-        }
-        
-        [manager POST:url parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+        [manager POST:url parameters:params headers:HeaderDic progress:^(NSProgress * _Nonnull uploadProgress) {
             nil;
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             //请求成功

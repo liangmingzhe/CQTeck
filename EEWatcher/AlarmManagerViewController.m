@@ -149,6 +149,7 @@
 }
 - (void)viewWillDisappear:(BOOL)animated{
     self.tabBarController.tabBar.hidden = NO;
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -651,7 +652,6 @@
                 [cell addSubview:msmDataSwitch];
             }else if(indexPath.row == 1){
                 cell.cellNameLabel.text = LocalizedString(@"l_CALL");
-                cell.cellNameLabel.textColor = [UIColor grayColor];
                 cell.itemImage.image = [UIImage imageNamed:@"main3callalarm"];
                 cell.detailText.text = @"";
                 callDataSwitch = [[UISwitch alloc]init];
@@ -687,7 +687,6 @@
                 [cell addSubview:msmStateSwitch];
             }else if(indexPath.row == 1){
                 cell.cellNameLabel.text = LocalizedString(@"l_CALL");
-                cell.cellNameLabel.textColor = [UIColor grayColor];
                 cell.itemImage.image = [UIImage imageNamed:@"main3callalarm"];
                 cell.detailText.text = @"";
                 callStateSwitch = [[UISwitch alloc]init];

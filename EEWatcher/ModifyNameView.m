@@ -82,8 +82,8 @@
     //网络服务参数设置
     NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"]};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"getAreaInfo" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"getAreaInfo"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //请求成功
@@ -141,8 +141,8 @@
     ScottAlertAction *save = [ScottAlertAction actionWithTitle:NSLocalizedString(@"Save", nil) style:ScottAlertActionStyleDestructive handler:^(ScottAlertAction * _Nonnull action) {
         NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"],@"oldArea":str,@"newArea" :str2};
         manager.securityPolicy.allowInvalidCertificates = NO;
-        [manager.requestSerializer setValue:@"setAreaInfo" forHTTPHeaderField:@"type"];
-        [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+        [manager POST:cqtek_api parameters:params headers:@{@"type":@"setAreaInfo"} progress:^(NSProgress * _Nonnull uploadProgress) {
             nil;
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             //请求成功

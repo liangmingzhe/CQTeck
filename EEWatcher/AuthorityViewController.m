@@ -57,11 +57,9 @@
     [self request];
 }
 - (void)request{
-    [manager.requestSerializer setValue:@"getDevAuthority" forHTTPHeaderField:@"type"];
-    
     NSDictionary *params =@{@"snaddr":[defaults objectForKey:@"snaddr"]};
     
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"getDevAuthority"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);
@@ -146,11 +144,10 @@
     ScottAlertView *alertView = [ScottAlertView alertViewWithTitle:LocalizedString(@"Tips") message:message];
     ScottAlertAction *action = [ScottAlertAction actionWithTitle:LocalizedString(@"Confirm") style:ScottAlertActionStyleDestructive handler:^(ScottAlertAction * _Nonnull action) {
         
-        [manager.requestSerializer setValue:@"handOverAuthority" forHTTPHeaderField:@"type"];
         NSDictionary *params =@{@"snaddr":[defaults objectForKey:@"snaddr"],@"user":[defaults objectForKey:@"cqUser"],@"newUser":newUser};
         
         
-        [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+        [manager POST:cqtek_api parameters:params headers:@{@"type":@"handOverAuthority"} progress:^(NSProgress * _Nonnull uploadProgress) {
             nil;
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSMutableDictionary* JSON = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];

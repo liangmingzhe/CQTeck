@@ -217,7 +217,7 @@
 "l_mobileList" = "Mobile List";
 "l_AllSwitch" = "Alarm Switch";
 "l_SMS" = "SMS";
-"l_CALL" = "CALL(Not On Line)";
+"l_CALL" = "CALL";
 "l_notification" = "Notification";
 "l_mailalarm" = "MAIL";
 "l_data_exception" = "Data Exception";

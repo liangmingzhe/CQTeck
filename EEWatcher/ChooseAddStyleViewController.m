@@ -41,6 +41,7 @@
     table = [[UITableView alloc]initWithFrame:self.view.frame style:UITableViewStylePlain];
     table.delegate = self;
     table.dataSource = self;
+    table.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:table];
     return table;
 }
@@ -55,19 +56,23 @@
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:idr];
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idr];
+        cell.backgroundColor = [UIColor whiteColor];
         if (indexPath.row == 0) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = LocalizedString(@"l_wireless");
+            cell.textLabel.textColor = [UIColor blackColor];
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20];
             UILabel* tips = [[UILabel alloc]initWithFrame:CGRectMake(120, cell.frame.size.height/2 - 15,cell.frame.size.width/3*2, 50)];
             tips.text = LocalizedString(@"t_tips_1");
             tips.textColor = [UIColor lightGrayColor];
             tips.numberOfLines = 2;
             [cell addSubview:tips];
-            
         }else{
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = LocalizedString(@"universal");
+            cell.textLabel.textColor = [UIColor blackColor];
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20];
             UILabel* tips = [[UILabel alloc]initWithFrame:CGRectMake(120, cell.frame.size.height/2 - 15,cell.frame.size.width/3*2, 50)];
             tips.text = LocalizedString(@"t_tips_2");
@@ -82,7 +87,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (indexPath.row == 0) {
         NSLog(@"");
         AddDevViewController* wifi = [[AddDevViewController alloc]init];

@@ -146,8 +146,8 @@ singleton_m(InstanceFour);
             defaults = [NSUserDefaults standardUserDefaults];
             NSDictionary *params = @{@"snaddr":[defaults objectForKey:@"snaddr" ],@"startTime":teststring,@"endTime":endString};
             manager.securityPolicy.allowInvalidCertificates = NO;
-            [manager.requestSerializer setValue:@"getHistoryAlarm" forHTTPHeaderField:@"type"];
-            [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+            [manager POST:cqtek_api parameters:params headers:@{@"type":@"getHistoryAlarm"} progress:^(NSProgress * _Nonnull uploadProgress) {
                 nil;
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSLog(@"请求成功:%@", responseObject);

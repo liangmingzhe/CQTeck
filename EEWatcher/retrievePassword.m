@@ -25,21 +25,27 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIView* titleBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 70)];
+    UIView* titleBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [GlobalParams navigationHeight])];
     UIImageView* image = [[UIImageView alloc]initWithFrame:titleBar.frame];
     image.image = [UIImage imageNamed:@"navgationbar"];
     [self.view addSubview:image];
     titleBar .backgroundColor = [UIColor clearColor];
     [self.view addSubview:titleBar];
    
-    UIButton* backButton = [[UIButton alloc]initWithFrame:CGRectMake(10, titleBar.frame.size.height/2 - 5, 20, 20)];
-    [backButton setImage:[UIImage imageNamed:@"main1down"] forState:UIControlStateNormal];
-    
+    UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"main1down"] forState:UIControlStateNormal];
     [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [backButton setBackgroundColor:[UIColor clearColor]];
-    backButton.titleLabel.font = [UIFont fontWithName:@"Arial" size:20];
-    [titleBar addSubview:backButton];
+    backButton.titleLabel.font = [UIFont fontWithName:@"Arial" size:18];
     [backButton addTarget:self action:@selector(backToLoginView) forControlEvents:UIControlEventTouchUpInside];
+    [titleBar addSubview:backButton];
+    
+    [backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+       make.centerY.equalTo(titleBar.mas_centerY).offset(10);
+       make.left.equalTo(titleBar.mas_left).offset(20);
+       make.width.height.mas_equalTo(20);
+    }];
+    
     
     UIButton* setButton = [[UIButton alloc]initWithFrame:CGRectMake( [UIScreen mainScreen].bounds.size.width - 55, titleBar.frame.size.height/2 - 10, 50, 30)];
     [setButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -80,25 +86,15 @@
     
 }
 - (void)backToLoginView{
-    //创建动画
-    CATransition *animation = [CATransition animation];
-    //设置动画类型为立方体动画
-    animation.type = @"cube";
-    //设置动画时长
-    animation.duration =0.5f;
-    //设置运动的方向
-    animation.subtype =kCATransitionFromRight;
-    //控制器间跳转动画
-    [[UIApplication sharedApplication].keyWindow.layer addAnimation:animation forKey:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setAndBack{
     NSDictionary *params = @{@"user":retrievePassText.text};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"retrievePass" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
-        nil;
+    
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"retrievePass"} progress:^(NSProgress * _Nonnull uploadProgress) {
+    
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);
         NSMutableDictionary*JSON;

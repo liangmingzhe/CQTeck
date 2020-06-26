@@ -21,7 +21,6 @@
         _DevTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, self.frame.size.width/2, self.frame.size.height)];
         _DevTextField.font = [UIFont fontWithName:@"Arial" size:18];
         _DevTextField.textAlignment = NSTextAlignmentLeft;
-        _DevTextField.textColor = [UIColor blackColor];
         [self addSubview:_DevTextField];
         _DeleteTextField =[[UIButton alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 30, self.frame.size.height/2 - 10, 20, 20)];
         [_DeleteTextField setImage:[UIImage imageNamed:@"deleteblack"] forState:UIControlStateNormal];

@@ -15,15 +15,17 @@
     // Initialization code
 }
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor whiteColor];
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         _labelName = [[UILabel alloc]initWithFrame:CGRectMake(5, self.frame.size.height/2 - 15, self.frame.size.width/2 - 5, 30)];
         _labelName.font = [UIFont fontWithName:@"Arial" size:18];
+        _labelName.textColor = [UIColor blackColor];
         [self addSubview:_labelName];
         
         _labelValue = [[UILabel alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2, self.frame.size.height/2 - 10, [UIScreen mainScreen].bounds.size.width/2 - 5, 20)];
         _labelValue.textAlignment = NSTextAlignmentRight;
         _labelValue.font = [UIFont fontWithName:@"Arial" size:16];
+        _labelValue.textColor = [UIColor blackColor];
         [self addSubview:_labelValue];
         
     }

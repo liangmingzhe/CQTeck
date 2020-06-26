@@ -92,8 +92,8 @@
         
         NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"],@"snaddr":[defaults objectForKey:@"snaddr"],@"devName":cell.DevTextField.text};
         manager.securityPolicy.allowInvalidCertificates = NO;
-        [manager.requestSerializer setValue:@"setDevName" forHTTPHeaderField:@"type"];
-        [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+        [manager POST:cqtek_api parameters:params headers:@{@"type":@"setDevName"}  progress:^(NSProgress * _Nonnull uploadProgress) {
             nil;
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             [m_loading removeFromSuperview];

@@ -93,8 +93,8 @@
     ScottAlertAction *action = [ScottAlertAction actionWithTitle:LocalizedString(@"Confirm") style:ScottAlertActionStyleDestructive handler:^(ScottAlertAction * _Nonnull action) {
         NSDictionary *params = @{@"snaddr":[defaults objectForKey:@"snaddr"],@"user":[defaults objectForKey:@"cqUser"]};
         manager.securityPolicy.allowInvalidCertificates = NO;
-        [manager.requestSerializer setValue:@"delDevice" forHTTPHeaderField:@"type"];
-        [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+        [manager POST:cqtek_api parameters:params headers:@{@"type": @"delDevice"} progress:^(NSProgress * _Nonnull uploadProgress) {
             nil;
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"请求成功:%@", responseObject);
@@ -164,8 +164,7 @@
                              ,@"snaddr":[defaults objectForKey:@"snaddr"]};
     
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"getDevInfo" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"getDevInfo"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);
@@ -365,8 +364,7 @@
 
 - (void)ModifyDevGap{
     NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"],@"snaddr": [defaults objectForKey:@"snaddr"],@"devGap":devGap};
-    [manager.requestSerializer setValue:@"modifyDeviceGap" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"modifyDeviceGap"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);

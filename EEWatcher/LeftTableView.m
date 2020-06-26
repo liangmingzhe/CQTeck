@@ -51,8 +51,7 @@
     //网络服务参数设置
     NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"]};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"getAreaInfo" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"getAreaInfo"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //请求成功
@@ -89,7 +88,10 @@
     
     [self.view addSubview:ItemTableView];
     imageView = [[UIImageView alloc] initWithFrame:CGRectMake(ItemTableView.frame.size.width/2 - 40,ItemTableView.frame.origin.y - 120, 80, 80)];
+    imageView.backgroundColor = [UIColor whiteColor];
     imageView.image = [UIImage imageNamed:@"headIcon"];
+    imageView.layer.cornerRadius = 40;
+    imageView.layer.masksToBounds = YES;
     [self.view addSubview:imageView];
     userLabel = [[UILabel alloc]initWithFrame:CGRectMake(ItemTableView.frame.size.width/2 - 40,imageView.frame.origin.y + imageView.frame.size.height + 5, 80, 25)];
     userLabel.textAlignment = NSTextAlignmentCenter;

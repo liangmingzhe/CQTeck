@@ -83,6 +83,7 @@
     picker = [[UIPickerView alloc]initWithFrame:Frame(WH(0), daterLab.h, daterContentView.frame.size.width, WH(130))];
     picker.dataSource=self;
     picker.delegate=self;
+    
     [daterContentView addSubview:picker];
     
     cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -200,6 +201,7 @@
     UILabel *rowLab = [[UILabel alloc] init];
     rowLab.textAlignment = NSTextAlignmentCenter;
     rowLab.backgroundColor = [UIColor clearColor];
+    rowLab.textColor = [UIColor blackColor];
     rowLab.frame = CGRectMake(0, 0, daterContentView.w/3.0, 50);
     [rowLab setFont:[UIFont systemFontOfSize:16]];
 

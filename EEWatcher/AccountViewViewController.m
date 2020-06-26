@@ -36,13 +36,14 @@
     ItemTableView = [[UITableView alloc]initWithFrame:[UIScreen mainScreen].bounds];
     ItemTableView.dataSource = self;
     ItemTableView.delegate = self;
-
+    ItemTableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:ItemTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -66,6 +67,7 @@
     {
         cell = [[AccountCellTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row == 0) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.AccountIcon.image = [UIImage imageNamed:@"main3mailbox"];

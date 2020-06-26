@@ -48,6 +48,7 @@ singleton_m(InstanceFive);
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"text/json", nil];
     timeTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
+    timeTable.backgroundColor = [UIColor whiteColor];
     timeTable.delegate = self;
     timeTable.dataSource = self;
     [self.view addSubview:timeTable];
@@ -142,8 +143,7 @@ singleton_m(InstanceFive);
                 NSDictionary *params =@{@"snaddr":[defaults objectForKey:@"snaddr" ],@"startTime":_teststring,@"endTime":_endString,@"rangeTime":self.rangeTime};
                 
                 manager.securityPolicy.allowInvalidCertificates = NO;
-                [manager.requestSerializer setValue:@"getHisData" forHTTPHeaderField:@"type"];
-                [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+                [manager POST:cqtek_api parameters:params headers:@{@"type":@"getHisData"} progress:^(NSProgress * _Nonnull uploadProgress) {
                     nil;
                 } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     NSLog(@"请求成功:%@", responseObject);
@@ -228,7 +228,7 @@ singleton_m(InstanceFive);
     static NSString *identifier = @"HistoryCell";
     
     cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    
     if (cell == nil)
     {
         cell = [[HistoryDatePickCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -241,6 +241,7 @@ singleton_m(InstanceFive);
         cell.labelName.text = [NSString stringWithFormat:@"%@:",LocalizedString(@"l_end_time")];
         cell.labelValue.text = [_endString substringWithRange:NSMakeRange(0, 16)];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

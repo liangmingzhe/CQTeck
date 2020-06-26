@@ -52,10 +52,9 @@
 @implementation EELoginView
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     //自动登录功能
     [self autoLogin];
-
-    [super viewDidLoad];
     // Do any additional setup after loading the view.
     UIImageView* backView = [[UIImageView alloc]initWithFrame:[UIScreen mainScreen].bounds];
     backView.backgroundColor = [UIColor clearColor];
@@ -105,7 +104,7 @@
     LoginBtn.backgroundColor = [UIColor colorWithRed:17.0/255.0 green:205.0/255.0 blue:110.0/255.0 alpha:0.7];
     
     LoginBtn.layer.cornerRadius = 10;
-    [LoginBtn addTarget:self action:@selector(gotoMain) forControlEvents:UIControlEventTouchUpInside];
+    [LoginBtn addTarget:self action:@selector(processLogin) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:LoginBtn];
     //找回密码按键初始化
     UIButton* retrievePassButton = [[UIButton alloc]initWithFrame:CGRectMake(Pass.frame.origin.x - 10, LoginBtn.frame.origin.y + LoginBtn.frame.size.height + 10, 150, 40)];
@@ -147,17 +146,8 @@
 
 - (void)getPassword{
     retrievePassword* retrievePass = [[retrievePassword alloc]init];
-    //创建动画
-    CATransition *animation = [CATransition animation];
-    //设置动画类型为立方体动画
-    animation.type = @"cube";
-    //设置动画时长
-    animation.duration =0.5f;
-    //设置运动的方向
-    animation.subtype =kCATransitionFromLeft;
-    //控制器间跳转动画
-    [[UIApplication sharedApplication].keyWindow.layer addAnimation:animation forKey:nil];
-    [self presentViewController:retrievePass animated:NO completion:nil];
+    retrievePass.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:retrievePass animated:YES completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -204,47 +194,29 @@
     }else{
         [m_loading show:YES];
         passwordmd5 = [self md5:str];
-        Request* request = [[Request alloc]init];
-        [request setHeader:@"type" value:@"login"];
-        [request setParameter:@"user" value:[defaults objectForKey:@"cqUser"]];
-        [request setParameter:@"password" value:passwordmd5];
-        
-        [Request Post:cqtek_api outTime:15 success:^(NSDictionary *data) {
-            
-            if([[data valueForKey:@"code"]longValue] == 1){
+        [CQHttpService loginWithAccount:[defaults objectForKey:@"cqUser"] password:passwordmd5 success:^(id  _Nonnull successObject) {
+            if([[successObject valueForKey:@"code"]longValue] == 1){
                 [self alertMessage:@"登录失败" msg:@"1.请检查用户名或密码是否正确\n2.请检查是否包含空格\n3.是否未区分大小写"];
-            }else if([[data valueForKey:@"code"]longValue] == 0){
-                //发送token后在进入主页
+            }else if([[successObject valueForKey:@"code"]longValue] == 0){
+                //登陆成功
                 [self updateToken];
-            }else{
-            
             }
             [m_loading removeFromSuperview];
-        } failure:^(NSError *error) {
+        } failure:^(id  _Nonnull failureObject) {
             [m_loading removeFromSuperview];
-                [self alertMessage:@"网络" msg:LocalizedString(@"Network_Error")];
+            [self alertMessage:@"网络" msg:LocalizedString(@"Network_Error")];
             
         }];
-
     }
 }
-
+// 注册
 - (void)goToRegidter{
-    RegisterViewController* reg = [[RegisterViewController alloc]init];
-    //创建动画
-    CATransition *animation = [CATransition animation];
-    //设置动画类型为立方体动画
-    animation.type = @"cube";
-    //设置动画时长
-    animation.duration =0.5f;
-    //设置运动的方向
-    animation.subtype =kCATransitionFromRight;
-    //控制器间跳转动画
-    [[UIApplication sharedApplication].keyWindow.layer addAnimation:animation forKey:nil];
-    [self presentViewController:reg animated:NO completion:nil];
+    RegisterViewController* regVC = [[RegisterViewController alloc]init];
+    regVC.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:regVC animated:YES completion:nil];
 }
-
-- (void)gotoMain{
+//进入主页
+- (void)processLogin{
     m_loading = [[MBProgressHUD alloc]initWithView:self.view];
     m_loading.dimBackground = YES;
     m_loading.labelText = LocalizedString(@"l_loading");
@@ -260,34 +232,26 @@
             [self alertMessage:@"提示" msg:LocalizedString(@"m_pass_can_not_be_empty")];
         }
         else{
-//            //检查密码是否为空
+            //检查密码是否为空
             [m_loading show:YES];
-   
-            Request* request = [[Request alloc]init];
-            [request setHeader:@"type" value:@"login"];
-            [request setParameter:@"user" value:User.text];
-            [request setParameter:@"password" value:[self md5:Pass.text]];
-            
-            [Request Post:cqtek_api outTime:15 success:^(NSDictionary *data) {
-                
+            __block NSString *userString = User.text;
+            __block NSString *passwordString = Pass.text;
+            [CQHttpService loginWithAccount:userString password:[self md5:passwordString] success:^(id  _Nonnull successObject) {
                 [m_loading removeFromSuperview];
-                if([[data valueForKey:@"code"]longValue] == 1){
+                if([[successObject valueForKey:@"code"]longValue] == 1){
                     [self alertMessage:@"登录失败" msg:@"1.请检查用户名或密码是否正确\n2.请检查是否包含空格\n3.是否未区分大小写"];
-                    
-                }else if([[data valueForKey:@"code"]longValue] == 0){
-                    [defaults setObject:User.text forKey:@"cqUser"];
-                    [defaults setObject:Pass.text forKey:@"cqPass"];
-                    
+                }else if([[successObject valueForKey:@"code"]longValue] == 0){
+                    [defaults setObject:userString forKey:@"cqUser"];
+                    [defaults setObject:passwordString forKey:@"cqPass"];
+                    [defaults synchronize];
                     [self updateToken];
                 }
-            } failure:^(NSError *error) {
-                NSLog(@"请求失败:%@", error.description);
+            } failure:^(id  _Nonnull failureObject) {
                 [m_loading removeFromSuperview];
                 [self alertMessage:@"网络" msg:LocalizedString(@"Network_Error")];
             }];
-            
         }
-
+        
     }
 }
 
@@ -296,24 +260,18 @@
         NSLog(@"login with simuralter");
         EERootController* toRoot = [[EERootController alloc]init];
         [self presentViewController:toRoot animated:YES completion:nil];
-
+        
     }else{
-        Request* request = [[Request alloc]init];
-        [request setParameter:@"user" value:[defaults objectForKey:@"cqUser"]];
-        [request setParameter:@"token" value:[defaults objectForKey:@"token"]];
-        [request setParameter:@"accessToken" value:@"CQY"];
-        [request setHeader:@"type" value:@"setDevToken"];
-        [Request Post:cqtek_api outTime:15
-              success:^(NSDictionary *data) {
-                  if ([[data objectForKey:@"code"]intValue] == 0) {
-                      
-                      EERootController* toRoot = [[EERootController alloc]init];
-                      
-                      [self presentViewController:toRoot animated:YES completion:nil];
-                  }
-              } failure:^(NSError *error) {
-                  NSLog(@"网络问题，操作失败");
-              }];
+        [CQHttpService registerPushTokenWithAccount:[defaults objectForKey:@"cqUser"] pushToken:[defaults objectForKey:@"token"] success:^(id  _Nonnull successObject) {
+            if ([[successObject objectForKey:@"code"] intValue] == 0) {
+                EERootController* toRoot = [[EERootController alloc]init];
+                [self presentViewController:toRoot animated:YES completion:nil];
+            }
+            
+        } failure:^(id  _Nonnull failureObject) {
+            NSLog(@"网络问题，操作失败");
+            
+        }];
     }
 }
 - (void)didReceiveMemoryWarning {

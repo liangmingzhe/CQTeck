@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "EELoginView.h"
 #import "EERootController.h"
-#import "AFNetworking/AFNetworking.h"
+
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

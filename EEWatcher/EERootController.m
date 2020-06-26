@@ -35,7 +35,7 @@
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];//导航条左侧字体变白色
     
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor clearColor],NSForegroundColorAttributeName,nil]];//导航条title颜色设为白色
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     defaults = [NSUserDefaults standardUserDefaults];
 
     // Do any additional setup after loading the view.

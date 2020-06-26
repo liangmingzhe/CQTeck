@@ -33,26 +33,40 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIView* titleBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 60)];
+    UIView* titleBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [GlobalParams navigationHeight])];
     UIImageView* image = [[UIImageView alloc]initWithFrame:titleBar.frame];
     image.image = [UIImage imageNamed:@"navgationbar"];
     [self.view addSubview:image];
-    titleBar .backgroundColor = [UIColor clearColor];
+    titleBar.backgroundColor = [UIColor clearColor];
     [self.view addSubview:titleBar];
-    UIButton* backButton = [[UIButton alloc]initWithFrame:CGRectMake(10, titleBar.frame.size.height/2, 20, 20)];
+    UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setBackgroundImage:[UIImage imageNamed:@"main1down"] forState:UIControlStateNormal];
     [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [backButton setBackgroundColor:[UIColor clearColor]];
     backButton.titleLabel.font = [UIFont fontWithName:@"Arial" size:18];
-    [titleBar addSubview:backButton];
     [backButton addTarget:self action:@selector(backToLoginView) forControlEvents:UIControlEventTouchUpInside];
-    UILabel* title = [[UILabel alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2 - 50, titleBar.frame.size.height/2 - 10, 100, 30)];
+    [titleBar addSubview:backButton];
+    
+    [backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(titleBar.mas_centerY).offset(10);
+        make.left.equalTo(titleBar.mas_left).offset(20);
+        make.width.height.mas_equalTo(20);
+    }];
+    
+    
+    UILabel* title = [[UILabel alloc] init];
     title.textColor = [UIColor whiteColor];
     title.textAlignment = NSTextAlignmentCenter;
     title.text = LocalizedString(@"l_Register");
-    title.font = [UIFont fontWithName:@"Arial" size:18];
+    title.font = [UIFont fontWithName:@"Arial" size:19];
     [titleBar addSubview:title];
     
+    [title mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(100);
+        make.height.mas_equalTo(30);
+        make.centerX.equalTo(titleBar);
+        make.centerY.equalTo(titleBar.mas_centerY).offset(10);
+    }];
     [self RegistTableView];
     [self checkDeclaration];
     [self RegisterBtn];
@@ -60,7 +74,7 @@
 }
 
 - (UITableView*)RegistTableView{
-    RegistTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 60, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 60) style:UITableViewStylePlain];
+    RegistTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, [GlobalParams navigationHeight], [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - [GlobalParams navigationHeight]) style:UITableViewStylePlain];
     RegistTableView.dataSource = self;
     RegistTableView.delegate = self;
     RegistTableView.scrollEnabled = false;
@@ -96,7 +110,7 @@
         BOOL checkUser = [Algorithm isOnlyNumberAndCharactors:user];
         if (checkUser == true) {
             if (password.length >=6 & password.length <=20) {
-                if (password == password2) {
+                if ([password isEqualToString:password2]) {
                     if (![name containsString:@" "]&&name>0) {
                         Request* request = [[Request alloc]init];
                         [request setHeader:@"type" value:@"register"];
@@ -160,6 +174,7 @@
         textField.borderStyle = UITextBorderStyleRoundedRect;
         [cell addSubview:textField];
         textField.tag = indexPath.row;
+        textField.font = [UIFont fontWithName:@"Arial" size:14];
         textField.textAlignment = NSTextAlignmentCenter;
         textField.returnKeyType = UIReturnKeyDone;
         [textField addTarget:self action:@selector(testHandle:) forControlEvents:UIControlEventEditingChanged];
@@ -236,17 +251,7 @@
     [self presentViewController:doc animated:YES completion:nil];
 }
 - (void)backToLoginView{
-    //创建动画
-    CATransition *animation = [CATransition animation];
-    //设置动画类型为立方体动画
-    animation.type = @"cube";
-    //设置动画时长
-    animation.duration =0.5f;
-    //设置运动的方向
-    animation.subtype =kCATransitionFromLeft;
-    //控制器间跳转动画
-    [[UIApplication sharedApplication].keyWindow.layer addAnimation:animation forKey:nil];
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

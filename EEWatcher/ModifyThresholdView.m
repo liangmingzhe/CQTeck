@@ -11,7 +11,10 @@
 //#import "MBProgressHUD.h"
 #import "UITextField+Extend.h"
 #import "ScottAlertController.h"
+#import "ItemValCell.h"
 #import "Language.h"
+
+#define kItemValCellID @"ItemValCell"
 @interface ModifyThresholdView ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>{
     UITableView* ItemTableView;
     NSMutableDictionary* Dic;
@@ -46,7 +49,7 @@
     self.navigationItem.rightBarButtonItem = rightButton;
 
 
-    ItemTableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width - 6, 300)];
+    ItemTableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width, 300)];
     ItemTableView.backgroundColor = [UIColor whiteColor];
     ItemTableView.opaque = YES;
     ItemTableView.dataSource = self;
@@ -54,6 +57,7 @@
     ItemTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     //ItemTableView.separatorStyle = UITableViewCellSelectionStyleNone;//   取消分割线
     [self.view addSubview:ItemTableView];
+    [ItemTableView registerNib:[UINib nibWithNibName:kItemValCellID bundle:nil] forCellReuseIdentifier:kItemValCellID];
     
     //提示
     UILabel* tipsLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 310, [UIScreen mainScreen].bounds.size.width - 10, 80)];
@@ -84,8 +88,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     NSDictionary *params = @{@"snaddr": [defaults objectForKey:@"snaddr"]};
-    [manager.requestSerializer setValue:@"getThreshold" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"getThreshold"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);
@@ -198,8 +201,7 @@
         }else if([[Dic2 objectForKey:@"minHumi"]doubleValue] >= [[Dic2 objectForKey:@"maxHumi"]doubleValue]){
             [self AlertMessage:LocalizedString(@"t_humi_min_max")];
         }else{
-            [manager.requestSerializer setValue:@"modifyTH" forHTTPHeaderField:@"type"];
-            [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+            [manager POST:cqtek_api parameters:params headers:@{@"type":@"modifyTH"} progress:^(NSProgress * _Nonnull uploadProgress) {
                 nil;
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSLog(@"请求成功:%@", responseObject);
@@ -244,7 +246,7 @@
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    cell = [[[NSBundle mainBundle]loadNibNamed:@"ItemValCell" owner:nil options:nil] lastObject];
+    cell = [tableView dequeueReusableCellWithIdentifier:kItemValCellID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.ItemVal.tag = indexPath.row;
     cell.ItemVal.delegate = self;

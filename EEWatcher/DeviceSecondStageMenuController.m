@@ -22,7 +22,7 @@
     UILabel* updateTime;
     NSString* msg1;
     NSString* msg2;
-    NSTimer* timer2;//动画定时器
+//    NSTimer* timer2;//动画定时器
     NSTimer* getTheRealData;
     NSTimer* getDevInfo;
     AFHTTPSessionManager *manager;
@@ -36,6 +36,14 @@
     UILabel* HistoryErr;
     UILabel* setIn;
     UILabel* AuthManager;
+    UILabel* IN1;
+    UILabel* IN2;
+    UILabel* IN3;
+    UILabel* IN4;
+    UILabel* label1;
+    UILabel* label2;
+    UILabel* label3;
+    UILabel* label4;
 }
 
 @end
@@ -48,7 +56,7 @@
     [super viewDidLoad];
     //背景色设备白色
     CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
-    gradientLayer.colors = @[(id)[[[UIColor colorWithRed:85.0/255.0 green:158/255.0 blue:198/255.0 alpha:1] colorWithAlphaComponent:1] CGColor], (id)[[[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1] colorWithAlphaComponent:1] CGColor]];
+    gradientLayer.colors = @[(id)[[[UIColor colorWithRed:85.0/255.0 green:158/255.0 blue:198/255.0 alpha:1] colorWithAlphaComponent:1] CGColor], (id)[[[UIColor colorWithRed:80/255.0 green:120.0/255.0 blue:200.0/255.0 alpha:1] colorWithAlphaComponent:1] CGColor]];
     gradientLayer.startPoint = CGPointMake(0, 0);
     gradientLayer.endPoint = CGPointMake(0, 1);
     gradientLayer.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame));
@@ -106,24 +114,29 @@
     humi.layer.borderWidth = 1;
     [self.view addSubview:humi];
     humi.text = @"--.--";
-    UILabel* humiUnit = [[UILabel alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2,temp.frame.origin.y + temp.frame.size.height, [UIScreen mainScreen].bounds.size.width/2, 30)];
+    UILabel* humiUnit = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH/2,temp.frame.origin.y + temp.frame.size.height, WIDTH/2, 30)];
     [self.view addSubview:humiUnit];
     humiUnit.textAlignment = NSTextAlignmentCenter;
     humiUnit.textColor = [UIColor whiteColor];
     humiUnit.font = [UIFont fontWithName:@"Arial" size:18];
     humiUnit.text = [NSString stringWithFormat:@"%@(%%RH)",LocalizedString(@"humidity")];
 
-    UIImageView* LineView = [[UIImageView alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2,temp.frame.origin.y, 1, temp.frame.size.height*1.5)];
+    UIImageView* LineView = [[UIImageView alloc]initWithFrame:CGRectMake(WIDTH/2,temp.frame.origin.y, 1, temp.frame.size.height*1.5)];
     LineView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:LineView];
     
-    AlarmSoundSwitch = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 60, [UIScreen mainScreen].bounds.size.height/8 - 50,50,50)];
+    AlarmSoundSwitch = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 60, HEIGHT/8 - 50,50,50)];
     [AlarmSoundSwitch setImage:[UIImage imageNamed:@"sound1"] forState:UIControlStateNormal];
     [self.view addSubview:AlarmSoundSwitch];
     [AlarmSoundSwitch addTarget:self action:@selector(SoundSwitch) forControlEvents:UIControlEventTouchUpInside];
 
+
+    [self IN1];
+    [self IN2];
+    [self IN3];
+    [self IN4];
 //----------设备状态------------------
-    status = [[UILabel alloc]initWithFrame:CGRectMake(5,[UIScreen mainScreen].bounds.size.height/3,self.view.frame.size.width - 10,60)];
+    status = [[UILabel alloc]initWithFrame:CGRectMake(5,HEIGHT/3.5,self.view.frame.size.width - 10,60)];
     status.numberOfLines = 3;
     status.textColor = [UIColor whiteColor];
     status.backgroundColor = [UIColor clearColor];
@@ -135,13 +148,13 @@
     status.textAlignment = NSTextAlignmentCenter;
     
     [self.view addSubview:status];
-    updateTime = [[UILabel alloc]initWithFrame:CGRectMake(5, status.frame.origin.y + status.frame.size.height, status.frame.size.width, 30)];
+    updateTime = [[UILabel alloc]initWithFrame:CGRectMake(5, HEIGHT/3.5 + 120, WIDTH - 10, 30)];
     updateTime.textColor = [UIColor whiteColor];
     updateTime.font = [UIFont fontWithName:@"Arial" size:18];
     updateTime.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:updateTime];
     
-    historyDataButton = [[UIButton alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/16, [UIScreen mainScreen].bounds.size.height/3*2, [UIScreen mainScreen].bounds.size.width/8,  [UIScreen mainScreen].bounds.size.width/8)];
+    historyDataButton = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH/16, HEIGHT/3.5 + 200, WIDTH/8,  WIDTH/8)];
     historyDataButton.layer.cornerRadius = 100;
     [historyDataButton setImage:[UIImage imageNamed:@"main1sub_history.png"] forState:UIControlStateNormal];
     historyDataButton.backgroundColor = [UIColor clearColor];
@@ -154,7 +167,7 @@
     History.text = LocalizedString(@"l_history_data");
     [self.view addSubview:History];
     
-    abnormalButton = [[UIButton alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/16*5, [UIScreen mainScreen].bounds.size.height/3*2, [UIScreen mainScreen].bounds.size.width/8,  [UIScreen mainScreen].bounds.size.width/8)];
+    abnormalButton = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH/16*5, HEIGHT/3.5 + 200, WIDTH/8,  WIDTH/8)];
     abnormalButton.layer.cornerRadius = 100;
     [abnormalButton setImage:[UIImage imageNamed:@"main1sub_historyErr.png"] forState:UIControlStateNormal];
     abnormalButton.backgroundColor = [UIColor clearColor];
@@ -167,7 +180,7 @@
     HistoryErr.text = LocalizedString(@"l_alarm_record");
     [self.view addSubview:HistoryErr];
 
-    deviceSettingButton = [[UIButton alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/16*9, [UIScreen mainScreen].bounds.size.height/3*2, [UIScreen mainScreen].bounds.size.width/8,  [UIScreen mainScreen].bounds.size.width/8)];
+    deviceSettingButton = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH/16*9,HEIGHT/3.5 + 200, WIDTH/8, WIDTH/8)];
     deviceSettingButton.layer.cornerRadius = 100;
     [deviceSettingButton setImage:[UIImage imageNamed:@"main1sub_set.png"] forState:UIControlStateNormal];
     deviceSettingButton.backgroundColor = [UIColor clearColor];
@@ -181,7 +194,7 @@
     [self.view addSubview:setIn];
 
     
-    authorityManagerButton = [[UIButton alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/16*13, deviceSettingButton.frame.origin.y, deviceSettingButton.frame.size.width, deviceSettingButton.frame.size.width)];
+    authorityManagerButton = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH/16*13, HEIGHT/3.5 + 200, WIDTH/8, WIDTH/8)];
     
     authorityManagerButton.layer.cornerRadius = 100;
     [authorityManagerButton setImage:[UIImage imageNamed:@"main1_authority.png"] forState:UIControlStateNormal];
@@ -201,6 +214,8 @@
     // Do any additional setup after loading the view.
     
 }
+
+
 - (void)viewWillAppear:(BOOL)animated{
     defaults = [NSUserDefaults standardUserDefaults];
     getTheRealData = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(GetData) userInfo:nil repeats:YES];
@@ -208,18 +223,79 @@
     
     getDevInfo = [NSTimer scheduledTimerWithTimeInterval:15.0f target:self selector:@selector(GetDevInfo) userInfo:nil repeats:YES];
     [getDevInfo fire];
-    timer2 = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(BarChartanimation) userInfo:nil repeats:YES];
-    
-    [timer2 fire];
+//    timer2 = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(BarChartanimation) userInfo:nil repeats:YES];
+//
+//    [timer2 fire];
 
+}
+
+- (UILabel*)IN1{
+    if (!IN1) {
+        label1 = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH/4 - 60, HEIGHT/3.5, 50, 50)];
+        label1.textColor = [UIColor whiteColor];
+        label1.text = @"停电:";
+        [self.view addSubview:label1];
+        IN1 = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH/4 - 10, HEIGHT/3.5, 120, 50)];
+        IN1.font = [UIFont fontWithName:@"Arial" size:18];
+        IN1.textColor = [UIColor whiteColor];
+        IN1.textAlignment = NSTextAlignmentLeft;
+        IN1.text = @"停电:";
+        [self.view addSubview:IN1];
+    }
+    return IN1;
+}
+- (UILabel*)IN2{
+    if (!IN2) {
+        label2 = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH/4*3 - 60, HEIGHT/3.5, 50, 50)];
+        label2.textColor = [UIColor whiteColor];
+        label2.text = @"水浸:";
+        [self.view addSubview:label2];
+        IN2 = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH/4*3 - 10, HEIGHT/3.5, 120, 50)];
+        IN2.font = [UIFont fontWithName:@"Arial" size:18];
+        IN2.textColor = [UIColor whiteColor];
+        IN2.textAlignment = NSTextAlignmentLeft;
+        IN2.text = @"水浸:";
+        [self.view addSubview:IN2];
+    }
+    return IN2;
+}
+- (UILabel*)IN3{
+    if (!IN3) {
+        label3 = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH/4 - 60, HEIGHT/3.5 + 50, 50, 50)];
+        label3.textColor = [UIColor whiteColor];
+        label3.text = @"烟雾:";
+        [self.view addSubview:label3];
+        IN3 = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH/4 - 10, HEIGHT/3.5 + 50, 120, 50)];
+        IN3.font = [UIFont fontWithName:@"Arial" size:18];
+        IN3.textColor = [UIColor whiteColor];
+        IN3.textAlignment = NSTextAlignmentLeft;
+        [self.view addSubview:IN3];
+    }
+    return IN3;
+}
+
+- (UILabel*)IN4{
+    if (!IN4) {
+        label4 = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH/4*3 - 60, HEIGHT/3.5 + 50, 50, 50)];
+        label4.textColor = [UIColor whiteColor];
+        label4.text = @"门磁:";
+        [self.view addSubview:label4];
+        IN4 = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH/4*3 - 10, HEIGHT/3.5 + 50, 120, 50)];
+        IN4.font = [UIFont fontWithName:@"Arial" size:18];
+        IN4.textColor = [UIColor whiteColor];
+        IN4.textAlignment = NSTextAlignmentLeft;
+        IN4.text = @"门磁:";
+        [self.view addSubview:IN4];
+    }
+    return IN4;
 }
 
 //获取设备信息
 - (void)GetDevInfo{
     NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"],@"snaddr":[defaults objectForKey:@"snaddr"]};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"getDevInfo" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"getDevInfo"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);
@@ -247,26 +323,93 @@
 - (void)GetData{
     NSDictionary *params = @{@"snaddr":[defaults objectForKey:@"snaddr"],@"curve":@"allLast"};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"getRTData" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"getRTData"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);
         NSMutableDictionary* JSON = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         if ([[JSON objectForKey:@"code"]intValue] == 0) {
+            if ([[[JSON objectForKey:@"array"] allKeys] containsObject:@"pow"] & [[[JSON objectForKey:@"array"] allKeys] containsObject:@"water"] & [[[JSON objectForKey:@"array"] allKeys] containsObject:@"smoke"] & [[[JSON objectForKey:@"array"] allKeys] containsObject:@"door"]) {
+                if ([[[JSON objectForKey:@"array"] objectForKey:@"pow"] isEqualToString:@"F"]){
+                    IN1.text = @"未接入";
+                    IN1.textColor = [UIColor lightGrayColor];
+                }else if ([[[JSON objectForKey:@"array"] objectForKey:@"pow"] isEqualToString:@"0"]){
+                    IN1.text = @"正常";
+                    IN1.textColor = [UIColor whiteColor];
+                }else if ([[[JSON objectForKey:@"array"] objectForKey:@"pow"] isEqualToString:@"1"]){
+                    IN1.text = @"报警";
+                    IN1.textColor = [UIColor colorWithRed:216/255.0 green:67/255.0 blue:74/255.0 alpha:0.8];
+                }
+                if ([[[JSON objectForKey:@"array"] objectForKey:@"water"] isEqualToString:@"F"]){
+                    IN2.text = @"未接入";
+                    IN2.textColor = [UIColor lightGrayColor];
+                }else if ([[[JSON objectForKey:@"array"] objectForKey:@"water"] isEqualToString:@"0"]){
+                    IN2.text = @"正常";
+                    IN2.textColor = [UIColor whiteColor];
+                }else if ([[[JSON objectForKey:@"array"] objectForKey:@"water"] isEqualToString:@"1"]){
+                    IN2.text = @"报警";
+                    IN2.textColor = [UIColor colorWithRed:216/255.0 green:67/255.0 blue:74/255.0 alpha:1];
+                }
+                if ([[[JSON objectForKey:@"array"] objectForKey:@"smoke"] isEqualToString:@"F"]){
+                    IN3.text = @"未接入";
+                    IN3.textColor = [UIColor lightGrayColor];
+                }else if ([[[JSON objectForKey:@"array"] objectForKey:@"smoke"] isEqualToString:@"0"]){
+                    IN3.text = @"正常";
+                    IN3.textColor = [UIColor whiteColor];
+                }else if ([[[JSON objectForKey:@"array"] objectForKey:@"smoke"] isEqualToString:@"1"]){
+                    IN3.text = @"报警";
+                    IN3.textColor = [UIColor colorWithRed:216/255.0 green:67/255.0 blue:74/255.0 alpha:1];
+                }
+                if ([[[JSON objectForKey:@"array"] objectForKey:@"door"] isEqualToString:@"F"]){
+                    IN4.text = @"未接入";
+                    IN4.textColor = [UIColor lightGrayColor];
+                }else if ([[[JSON objectForKey:@"array"] objectForKey:@"door"] isEqualToString:@"0"]){
+                    IN4.text = @"正常";
+                    IN4.textColor = [UIColor whiteColor];
+                }else if ([[[JSON objectForKey:@"array"] objectForKey:@"door"] isEqualToString:@"1"]){
+                    IN4.text = @"报警";
+                    IN4.textColor = [UIColor colorWithRed:216/255.0 green:67/255.0 blue:74/255.0 alpha:1];
+                }
+            }else{
+                IN4.textColor = [UIColor whiteColor];
+                IN3.textColor = [UIColor whiteColor];
+                IN2.textColor = [UIColor whiteColor];
+                IN1.textColor = [UIColor whiteColor];
+                IN1.text = @"-";
+                IN2.text = @"-";
+                IN3.text = @"-";
+                IN4.text = @"-";
+            }
             if([[[JSON objectForKey:@"array"] objectForKey:@"abnormal"] isEqualToString:@"3"]){
                 status.text = @"传感器未连接";
                 temp.text = [NSString stringWithFormat:@"--.--"];
                 humi.text = [NSString stringWithFormat:@"--.--"];
+                [updateTime setFrame:CGRectMake(5, HEIGHT/3.5 +50, WIDTH - 10, 30)];
                 //updateTime.text = [NSString stringWithFormat:@"最后上传时间:%@",[JSON objectForKey:@"time"]];
-                
-                
+                [IN1 setHidden:YES];
+                [IN2 setHidden:YES];
+                [IN3 setHidden:YES];
+                [IN4 setHidden:YES];
+                [label1 setHidden:YES];
+                [label2 setHidden:YES];
+                [label3 setHidden:YES];
+                [label4 setHidden:YES];
             }else if([[[JSON objectForKey:@"array"] objectForKey:@"abnormal"] isEqualToString:@"1"]){
                 temp.text = [NSString stringWithFormat:@"%@",[[[JSON objectForKey:@"array"] objectForKey:@"temp"] objectForKey:@"value"]];
                 humi.text = [NSString stringWithFormat:@"%@",[[[JSON objectForKey:@"array"] objectForKey:@"humi"] objectForKey:@"value"]];
                 updateTime.text = [NSString stringWithFormat:@"最后上传时间:%@",[[JSON objectForKey:@"array"] objectForKey:@"time"]];
                 status.text = @"设备离线";
                 status.textColor = [UIColor darkGrayColor];
+                [updateTime setFrame:CGRectMake(5, HEIGHT/3.5 +50, WIDTH - 10, 30)];
+                [IN1 setHidden:YES];
+                [IN2 setHidden:YES];
+                [IN3 setHidden:YES];
+                [IN4 setHidden:YES];
+                [label1 setHidden:YES];
+                [label2 setHidden:YES];
+                [label3 setHidden:YES];
+                [label4 setHidden:YES];
             }
             else{
                 //实时温湿度数据
@@ -318,7 +461,12 @@
                     default:
                         break;
                 }
-                status.text = [NSString stringWithFormat:@"%@,%@",msg2,msg1];
+                status.text = @"";
+                [label1 setHidden:false];
+                [label2 setHidden:false];
+                [label3 setHidden:false];
+                [label4 setHidden:false];
+                [updateTime setFrame:CGRectMake(5, HEIGHT/3.5 + 120, WIDTH - 10, 30)];
                 updateTime.text = [NSString stringWithFormat:@"%@:%@",LocalizedString(@"l_last_date"),[[JSON objectForKey:@"array"] objectForKey:@"time"]];
                 msg2 = @"";
                 msg1 = @"";
@@ -349,8 +497,7 @@
 - (void)SoundOpen{
     NSDictionary *params = @{@"snaddr":[defaults objectForKey:@"snaddr"],@"beepStatus":@"1"};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"setRealAlarm" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"setRealAlarm"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);
@@ -378,8 +525,8 @@
 - (void)SoundClose{
     NSDictionary *params = @{@"snaddr":[defaults objectForKey:@"snaddr"],@"beepStatus":@"0"};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"setRealAlarm" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"setRealAlarm"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功:%@", responseObject);
@@ -408,20 +555,20 @@
 - (void)viewWillDisappear:(BOOL)animated{
     [getTheRealData invalidate];
     [getDevInfo invalidate];
-    [timer2 invalidate];
+//    [timer2 invalidate];
 }
 - (void)historyData{
-    [timer2 invalidate];
+//    [timer2 invalidate];
     HistoryTimePickViewController* historyDataPick = [[HistoryTimePickViewController alloc]init];
     [self.navigationController pushViewController:historyDataPick animated:YES];
 }
 - (void)checkHistory{
-    [timer2 invalidate];
+//    [timer2 invalidate];
     HistoryCheck* history = [[HistoryCheck alloc]init];
     [self.navigationController pushViewController:history animated:YES];
 }
 - (void)checkAbnormal{
-    [timer2 invalidate];
+//    [timer2 invalidate];
     HistoryCheck* history = [[HistoryCheck alloc]init];
     [self.navigationController pushViewController:history animated:YES];
 }

@@ -7,8 +7,10 @@
 //
 
 #import "AddDevViewController.h"
+
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "HFSmartLink.h"
+#import <CoreLocation/CoreLocation.h>
 #import "HFSmartLinkDeviceInfo.h"
 #import "AFNetworking.h"
 #import "NewDeviceListView.h"
@@ -19,7 +21,7 @@
 #import "Language.h"
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
-@interface AddDevViewController (){
+@interface AddDevViewController ()<CLLocationManagerDelegate>{
 //    NSString* ssid;
     HFSmartLink * smtlk;
      BOOL isconnecting;
@@ -33,10 +35,11 @@
     NSTimer* timer;
     UIButton* questionForSSID;
     UIButton* questionForPass;
-    
+    NSString *wifiId;
 }
 //@property (strong, nonatomic) ASProgressPopUpView *progressView;
 @property (strong, nonatomic)FYCountDownView * countDownView;
+@property (strong, nonatomic) CLLocationManager *cllocation;
 @end
 
 @implementation AddDevViewController
@@ -49,6 +52,8 @@ singleton_m(InstanceThree);
     //单个配置开关
     smtlk.isConfigOneDevice = YES;
     smtlk.waitTimers = 30;
+    self.cllocation = [[CLLocationManager alloc] init];
+    self.cllocation.delegate = self;
     
     CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
     gradientLayer.colors = @[(id)[[[UIColor colorWithRed:59/255.0 green:113/255.0 blue:167/255.0 alpha:1] colorWithAlphaComponent:1] CGColor], (id)[[[UIColor colorWithRed:44/255.0 green:115/255.0 blue:140/255.0 alpha:1] colorWithAlphaComponent:1] CGColor]];
@@ -191,7 +196,6 @@ singleton_m(InstanceThree);
     return maskView;
 }
 - (void)viewWillAppear:(BOOL)animated{
-    [self showWifiSsid];
     [_PasswordText resignFirstResponder];
     macArray = [[NSMutableArray alloc]initWithCapacity:0];
     self.listArray = [[NSMutableArray alloc]initWithCapacity:0];
@@ -221,6 +225,8 @@ singleton_m(InstanceThree);
         [self.view addSubview:self.countDownView = _countDownView];
         
     }
+    
+    [self getWifiSSIDInfo];
 }
 //即将离开页面
 - (void)viewWillDisappear:(BOOL)animated{
@@ -357,8 +363,8 @@ singleton_m(InstanceThree);
     
     NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"],@"mac":macArray[0]};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"addDevice" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"addDevice"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
 
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -397,8 +403,8 @@ singleton_m(InstanceThree);
    
     NSDictionary *params = @{@"user":[defaults objectForKey:@"cqUser"],@"mac":mac};
     manager.securityPolicy.allowInvalidCertificates = NO;
-    [manager.requestSerializer setValue:@"addDevice" forHTTPHeaderField:@"type"];
-    [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+
+    [manager POST:cqtek_api parameters:params headers:@{@"type":@"addDevice"} progress:^(NSProgress * _Nonnull uploadProgress) {
         nil;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSMutableDictionary* data = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
@@ -426,27 +432,59 @@ singleton_m(InstanceThree);
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)showWifiSsid
-{
-    BOOL wifiOK= FALSE;
-    NSDictionary *ifs;
-    NSString *ssid;
-    if (!wifiOK)
-    {
-        ifs = [self fetchSSIDInfo];
-        ssid = [ifs objectForKey:@"SSID"];
-        if (ssid!= nil)
-        {
-            wifiOK= TRUE;
-            self.SSIDText.text = ssid;
-        }
-        else
-        {
+- (void)getWifiSSIDInfo {
+    if (@available(iOS 13.0, *)) {
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
             [self AlertMessage:LocalizedString(@"t_link_wifi")];
+            return;
+        }
+        
+        if(![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined){
+            [self.cllocation requestWhenInUseAuthorization];
+            return;
         }
     }
+    [self getSSID];
+ 
 }
 
+
+- (NSString *)getDeviceConnectWifiName{
+    NSArray *ifs = (__bridge id)CNCopySupportedInterfaces();
+    id info = nil;
+    for (NSString *ifnam in ifs) {
+        info = (__bridge id)CNCopyCurrentNetworkInfo((CFStringRef)CFBridgingRetain(ifnam));
+        if (info && [info count]) {
+            break;
+        }
+    }
+    if ([info isKindOfClass:[NSDictionary class]]) {
+        //获取SSID
+        return [info objectForKey:@"SSID"];
+    }
+    return nil;
+}
+
+- (void)getSSID {
+    NSString *wifiSSID = nil;
+    CFArrayRef wifiArrayRef = CNCopySupportedInterfaces();
+    if (!wifiArrayRef) {
+        return;
+    }
+    NSArray *wifiArray = (__bridge NSArray *)wifiArrayRef;
+    for (NSString *wifi in wifiArray) {
+        CFDictionaryRef dictRef = CNCopyCurrentNetworkInfo((__bridge CFStringRef)(wifi));
+        if (dictRef) {
+            NSDictionary *networkInfo = (__bridge NSDictionary *)dictRef;
+            wifiSSID = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeySSID];
+            CFRelease(dictRef);
+        }
+    }
+    
+    CFRelease(wifiArrayRef);
+    wifiId = wifiSSID;
+    self.SSIDText.text = wifiId;
+}
 - (id)fetchSSIDInfo {
     NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
     NSLog(@"Supported interfaces: %@", ifs);
@@ -458,7 +496,13 @@ singleton_m(InstanceThree);
     }
     return info;
 }
-
+- (void)updateWiFiInformation:(NSNotification *)noti {
+    [self getWifiSSIDInfo];
+}
+ 
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    [self getSSID];
+}
 //点击空白处收回键盘
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [_PasswordText resignFirstResponder];

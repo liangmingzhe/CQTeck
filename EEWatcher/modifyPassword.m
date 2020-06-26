@@ -66,10 +66,6 @@
     UIBarButtonItem *rightButton=[[UIBarButtonItem alloc]initWithCustomView:setButton];
     self.navigationItem.rightBarButtonItem = rightButton;
 
-//    UIImageView* imageLogo = [[UIImageView alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/8,20, [UIScreen mainScreen].bounds.size.width/4*3, [UIScreen mainScreen].bounds.size.height/4 - 50)];
-//    imageLogo.image = [UIImage imageNamed:@"chengqiankejilogo"];
-//    [self.view addSubview:imageLogo];
-    
     UIView* view = [[UIView alloc]initWithFrame:CGRectMake(10, 0, [UIScreen mainScreen].bounds.size.width - 20, [UIScreen mainScreen].bounds.size.height/4)];
     view.backgroundColor = [UIColor clearColor];
     view.layer.cornerRadius = 3;
@@ -78,41 +74,42 @@
     OldPass = [[UITextField alloc]initWithFrame:CGRectMake(view.frame.size.width/10, view.frame.size.height/6 - 20, view.frame.size.width/10*8, 40)];
     OldPass.borderStyle = UITextBorderStyleRoundedRect;
     OldPass.textAlignment = NSTextAlignmentCenter;
-    OldPass.backgroundColor = [UIColor clearColor];
+    OldPass.backgroundColor = [UIColor whiteColor];
     OldPass.textColor = [UIColor blackColor];
     OldPass.secureTextEntry = YES;
     OldPass.font = [UIFont fontWithName:@"Arial" size:20];
-    OldPass.placeholder = LocalizedString(@"l_enter_old");
-    
-    //    _SSIDText.backgroundColor = [UIColor redColor];
-    
-    
-    //    UIImageView* line = [[UIImageView alloc]initWithFrame:CGRectMake(_SSIDText.frame.origin.x, _SSIDText.frame.origin.y + _SSIDText.frame.size.height, _SSIDText.frame.size.width, 1)];
-    //    line.backgroundColor = [UIColor blackColor];
-    
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:LocalizedString(@"l_enter_old") attributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor],NSFontAttributeName:OldPass.font}];
+    OldPass.attributedPlaceholder = attrString;
+    OldPass.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    OldPass.layer.borderWidth = 0.3;
+
     [view addSubview:OldPass];
-    
     NewPass = [[UITextField alloc]initWithFrame:CGRectMake(OldPass.frame.origin.x, OldPass.frame.origin.y + OldPass.frame.size.height + 10, view.frame.size.width/10*8, OldPass.frame.size.height)];
     NewPass.borderStyle = UITextBorderStyleRoundedRect;
     NewPass.textAlignment = NSTextAlignmentCenter;
     NewPass.textColor = [UIColor blackColor];
-    NewPass.backgroundColor = [UIColor clearColor];
+    NewPass.backgroundColor = [UIColor whiteColor];
     NewPass.secureTextEntry = YES;
     NewPass.font = [UIFont fontWithName:@"Arial" size:20];
-    NewPass.placeholder = LocalizedString(@"l_enter_new");
-    
 
+    NSAttributedString *attrString2 = [[NSAttributedString alloc] initWithString:LocalizedString(@"l_enter_new") attributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor],NSFontAttributeName:NewPass.font}];
+    NewPass.attributedPlaceholder = attrString2;
+    NewPass.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    NewPass.layer.borderWidth = 0.3;
     [view addSubview:NewPass];
 
     ConfirmNewPass = [[UITextField alloc]initWithFrame:CGRectMake(NewPass.frame.origin.x, NewPass.frame.origin.y + NewPass.frame.size.height + 10, view.frame.size.width/10*8, NewPass.frame.size.height)];
     ConfirmNewPass.borderStyle = UITextBorderStyleRoundedRect;
     ConfirmNewPass.textAlignment = NSTextAlignmentCenter;
     ConfirmNewPass.textColor = [UIColor blackColor];
-    ConfirmNewPass.backgroundColor = [UIColor clearColor];
+    ConfirmNewPass.backgroundColor = [UIColor whiteColor];
     ConfirmNewPass.secureTextEntry = YES;
     ConfirmNewPass.font = [UIFont fontWithName:@"Arial" size:20];
     ConfirmNewPass.placeholder = LocalizedString(@"l_enter_new_again");
-
+    NSAttributedString *attrString3 = [[NSAttributedString alloc] initWithString:LocalizedString(@"l_enter_new_again") attributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor],NSFontAttributeName:ConfirmNewPass.font}];
+    ConfirmNewPass.attributedPlaceholder = attrString3;
+    ConfirmNewPass.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    ConfirmNewPass.layer.borderWidth = 0.3;
     [view addSubview:ConfirmNewPass];
     
     UILabel* messageLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, view.frame.origin.y + view.frame.size.height, [UIScreen mainScreen].bounds.size.width, 50)];
@@ -156,8 +153,7 @@
                                  ,@"oldPass":[self md5:OldPass.text]
                                  ,@"newPass":[self md5:NewPass.text]};
         manager.securityPolicy.allowInvalidCertificates = NO;
-        [manager.requestSerializer setValue:@"modifyPass" forHTTPHeaderField:@"type"];
-        [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+        [manager POST:cqtek_api parameters:params headers:@{@"type":@"modifyPass"} progress:^(NSProgress * _Nonnull uploadProgress) {
             nil;
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"请求成功:%@", responseObject);

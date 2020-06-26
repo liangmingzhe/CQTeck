@@ -7,8 +7,8 @@
 */
 //注册页面
 "t_language_cn" = "中文";
-"t_account_format" = "账号格式为6～20数字或字母";
-"t_password_format" = "密码格式为6～20数字或字母";
+"t_account_format" = "账号格式为6～20数字或小写字母";
+"t_password_format" = "密码格式为6～20数字或小写字母";
 "l_password" = "密码";
 "l_password_again" = "密码确认";
 "l_nickname" = "昵称";
@@ -217,7 +217,7 @@
 "l_mobileList" = "手机列表";
 "l_AllSwitch" = "报警总开关";
 "l_SMS" = "短信通知";
-"l_CALL" = "语音电话(暂未上线)";
+"l_CALL" = "语音电话";
 "l_notification" = "推送通知";
 "l_mailalarm" = "邮件通知";
 "l_data_exception" = "数据异常";

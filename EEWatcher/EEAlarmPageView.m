@@ -34,7 +34,7 @@ singleton_m(InstanceAlarm);
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor lightGrayColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = LocalizedString(@"l_alarm");
     //标题字体设置
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"Arial" size:20],NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -70,6 +70,7 @@ singleton_m(InstanceAlarm);
     AlarmTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 105.5) style:UITableViewStylePlain];
     AlarmTableView.delegate = self;
     AlarmTableView.dataSource = self;
+    AlarmTableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:AlarmTableView];
     return AlarmTableView;
 }
@@ -176,6 +177,7 @@ singleton_m(InstanceAlarm);
         cell.deviceName.text = [NSString stringWithFormat:@"%@(%@)",[subDetial[indexPath.row] objectForKey:@"devName"],[subDetial[indexPath.row] objectForKey:@"snaddr"]];
     cell.startTime.text =[NSString stringWithFormat:@"开始报警:%@",[[array objectForKey:@"startTime"]substringWithRange:NSMakeRange(0, 16)]];
     
+
     if([[array objectForKey:@"endTime"] length] >15){
         cell.endTime.text =[NSString stringWithFormat:@"结束报警:%@",[[array objectForKey:@"endTime"]substringWithRange:NSMakeRange(0, 16)]];
 

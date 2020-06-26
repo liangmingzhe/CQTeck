@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <UserNotifications/UserNotifications.h>
 #import "UMessage.h"
+
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>{
     NSUserDefaults* defaults;
     
@@ -18,7 +19,6 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
     [Language initUserLanguage];
 
     //注册通知
@@ -127,14 +127,22 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
         // 转换一下
     [UMessage registerDeviceToken:deviceToken];
-    NSString* deviceTokenString = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    NSString *token = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
-        //
-        NSLog(@"成功%@",token);
-    defaults = [NSUserDefaults standardUserDefaults];
-//    NSLog(@"%@",token);
-    [defaults setObject:token forKey:@"token"];
+    if (@available(iOS 13.0, *)) {
+        NSMutableString *deviceTokenStr = [NSMutableString string];
+        char *byte = (char *)[deviceToken bytes];
+        for (int i = 0; i < deviceToken.length; i++) {
+            [deviceTokenStr appendFormat:@"%02x", byte[i]&0x000000FF];
+        }
+        defaults = [NSUserDefaults standardUserDefaults];
+       //    NSLog(@"%@",token);
+        [defaults setObject:deviceTokenStr forKey:@"token"];
+       // 这里发个网络把deviceToken传给后台
+    } else {
+        NSString *deviceTokenStr = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<" withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
+        defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:deviceTokenStr forKey:@"token"];
         // 这里发个网络把deviceToken传给后台
+    }
 }
 
 

@@ -12,6 +12,7 @@
 #import "ScanViewController.h"
 #import "WhatisRTUViewController.h"
 #import "Language.h"
+// 通用型
 @interface SNNumberViewController ()<UITextFieldDelegate>{
     UITextField* snaddrNumber;
     UITextField* acNumber;
@@ -152,8 +153,7 @@
         }else{
             NSDictionary *params = @{@"snaddr":snaddrNumber.text,@"user":[defaults objectForKey:@"cqUser"],@"ac":acNumber.text};
             manager.securityPolicy.allowInvalidCertificates = NO;
-            [manager.requestSerializer setValue:@"addDeviceBySN" forHTTPHeaderField:@"type"];
-            [manager POST:cqtek_api parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+            [manager POST:cqtek_api parameters:params headers:@{@"type":@"addDeviceBySN"} progress:^(NSProgress * _Nonnull uploadProgress) {
                 nil;
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSLog(@"请求成功:%@", responseObject);
@@ -181,9 +181,10 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+// 扫码
 - (void)goScanView{
     ScanViewController* scanView = [[ScanViewController alloc]init];
+    scanView.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:scanView animated:NO completion:nil];
 
 }
