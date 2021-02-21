@@ -26,6 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = LocalizedString(@"l_mobileList");
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"Arial" size:20],NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -37,6 +38,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     //隐藏tabbar
 	self.tabBarController.tabBar.hidden = YES;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     defaults = [NSUserDefaults standardUserDefaults];
     [self getAccountMobileList];
     
@@ -118,7 +120,6 @@
     if ([[dataDictionary objectForKey:@"mobileList"] count] >0){
         if(indexPath.row <= [[dataDictionary objectForKey:@"mobileList"] count]){
             cell.textLabel.font = [UIFont fontWithName:@"Arial" size:20];
-            cell.textLabel.textColor = [UIColor blackColor];
             cell.textLabel.text = [NSString stringWithFormat:@"%@",[dataDictionary objectForKey:@"mobileList"][indexPath.row]];
         }
 
@@ -237,6 +238,7 @@
     
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"请输入11位手机号码";
+        textField.textColor = [UIColor blackColor];
         textField.keyboardType = UIKeyboardTypeASCIICapableNumberPad;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTextFieldTextDidChangeNotification:) name:UITextFieldTextDidChangeNotification object:textField];
     }];

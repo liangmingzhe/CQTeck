@@ -772,7 +772,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
-        PhoneViewController* numberManager = [[PhoneViewController alloc]init];
+        PhoneViewController *numberManager = [[PhoneViewController alloc]init];
         [self.navigationController pushViewController:numberManager animated:YES];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

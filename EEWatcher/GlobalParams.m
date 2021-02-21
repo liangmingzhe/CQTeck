@@ -14,7 +14,7 @@
     isBangsScreen = window.safeAreaInsets.bottom > 0; \
     } \
     isBangsScreen; \
-})
+})																
 
 @implementation GlobalParams
 + (NSString* )getHttpDomain {

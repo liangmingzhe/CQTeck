@@ -175,7 +175,11 @@ singleton_m(InstanceAlarm);
         array = subDetial[indexPath.row];
         cell.alarmid.text = [array objectForKey:@"alarmId"];
         cell.deviceName.text = [NSString stringWithFormat:@"%@(%@)",[subDetial[indexPath.row] objectForKey:@"devName"],[subDetial[indexPath.row] objectForKey:@"snaddr"]];
-    cell.startTime.text =[NSString stringWithFormat:@"开始报警:%@",[[array objectForKey:@"startTime"]substringWithRange:NSMakeRange(0, 16)]];
+    NSString *startTime = [array objectForKey:@"startTime"];
+    if (startTime.length == 16) {
+        startTime = [[array objectForKey:@"startTime"] substringWithRange:NSMakeRange(0, 16)];
+    }
+    cell.startTime.text =[NSString stringWithFormat:@"开始报警:%@",startTime];
     
 
     if([[array objectForKey:@"endTime"] length] >15){

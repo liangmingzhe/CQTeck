@@ -1615,7 +1615,7 @@
 				CODE_SIGN_ENTITLEMENTS = CQTechApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Chengqian Technology Co., Ltd. (ZAEG6YPEMR)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ZAEG6YPEMR;
 				ENABLE_BITCODE = NO;
@@ -1635,7 +1635,7 @@
 					"$(PROJECT_DIR)/UMessage_Sdk_1.5.0",
 					"$(PROJECT_DIR)/UMessage_Sdk_1.5.0a",
 				);
-				MARKETING_VERSION = 1.6.4.2;
+				MARKETING_VERSION = 1.6.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HangzhouChengqian;
 				PRODUCT_NAME = CQTechApp;
 				PROVISIONING_PROFILE = "";
@@ -1657,7 +1657,7 @@
 				CODE_SIGN_ENTITLEMENTS = CQTechApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Hangzhou Chengqian Technology Co., Ltd. (ZAEG6YPEMR)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ZAEG6YPEMR;
 				ENABLE_BITCODE = NO;
@@ -1676,7 +1676,7 @@
 					"$(PROJECT_DIR)/UMessage_Sdk_1.5.0",
 					"$(PROJECT_DIR)/UMessage_Sdk_1.5.0a",
 				);
-				MARKETING_VERSION = 1.6.4.2;
+				MARKETING_VERSION = 1.6.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HangzhouChengqian;
 				PRODUCT_NAME = CQTechApp;
 				PROVISIONING_PROFILE = "";
